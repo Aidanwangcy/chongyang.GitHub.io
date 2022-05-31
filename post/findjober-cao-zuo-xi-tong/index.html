@@ -1,0 +1,2856 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="keywords" content="blog go docker 编程 个人纪录">
+<meta name="description" content="Pain is motivation.">
+<meta name="theme-color" content="#000">
+<title>findJob（二）：操作系统 | Aidan&#39;s Blog</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1654008245757">
+<link rel="stylesheet" href="/media/css/pisces.css">
+<link rel="stylesheet" href="/media/fonts/font-awesome.css">
+<link
+  href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
+  rel="stylesheet" type="text/css">
+
+<link href="/media/hljs/styles/xcode.css"
+  rel="stylesheet">
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<script src="/media/hljs/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+  integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+  integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+  integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142106965-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-142106965-1');
+</script>
+
+
+<script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?0d6f9badfc9e8c607897ee3cbd8c7ace";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+  <meta name="description" content="findJob（二）：操作系统" />
+  <meta name="keywords" content="" />
+</head>
+
+<body>
+  <div class="head-top-line"></div>
+  <div class="header-box">
+    
+<div class="pisces">
+  <header class="header  ">
+    <div class="blog-header box-shadow-wrapper bg-color " id="header">
+      <div class="nav-toggle" id="nav_toggle">
+        <div class="toggle-box">
+          <div class="line line-top"></div>
+          <div class="line line-center"></div>
+          <div class="line line-bottom"></div>
+        </div>
+      </div>
+      <div class="site-meta">       
+        <div class="site-title">
+          
+            <a href="/" class="brand">
+              <span>Aidan&#39;s Blog</span>
+            </a>  
+          
+        </div>
+        
+          <p class="subtitle">Pain is motivation.</p>
+        
+      </div>
+      <nav class="site-nav" id="site_nav">
+        <ul id="nav_ul">
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/" target="_self">
+                  <i class="fa fa-home"></i> 首页
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/tags/" target="_self">
+                  <i class="fa fa-tags"></i> 标签
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/archives/" target="_self">
+                  <i class="fa fa-archive"></i> 归档
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/post/about/" target="_self">
+                  <i class="fa fa-user"></i> 关于
+                </a>
+              
+            </li>
+          
+          
+            
+              <li class="nav-item ">
+                <a href="/friends/" target="_blank">
+                  
+                    <i class="fa fa-address-book"></i> Link
+                  
+                </a>
+              </li>
+            
+          
+          
+            <li id="fa_search" class="nav-item">
+              <a href="javascript:void(0);">
+                <i class="fa fa-search"></i> <span class="language" data-lan="search">搜索</span>
+              </a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<script type="text/javascript"> 
+ 
+  let showNav = true;
+
+  let navToggle = document.querySelector('#nav_toggle'),
+  siteNav = document.querySelector('#site_nav');
+  
+  function navClick() {
+    let sideBar = document.querySelector('.sidebar');
+    let navUl = document.querySelector('#nav_ul');
+    navToggle.classList.toggle('nav-toggle-active');
+    siteNav.classList.toggle('nav-menu-active');
+    if (siteNav.classList.contains('nav-menu-active')) {
+      siteNav.style = "height: " + (navUl.children.length * 42) +"px !important";
+    } else {
+      siteNav.style = "";
+    }
+  }
+
+  navToggle.addEventListener('click',navClick);  
+</script>
+  </div>
+  <div class="main-continer">
+    
+    <div
+      class="section-layout pisces ">
+      <div class="section-layout-wrapper">
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active language" data-lan="index">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item language" data-lan="preview">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            <div class="post-side-meta" id="post_side_meta">
+              
+<div class="sidebar-wrapper box-shadow-wrapper bg-color">
+  <div class="sidebar-item">
+    <img class="site-author-image right-motion" src="/images/avatar.png"/>
+    <p class="site-author-name">Aidan</p>
+    
+    <div class="site-description right-motion">
+      
+      
+      
+        <p>Pain is motivation.</p>
+      
+      
+    </div>
+    
+  </div>
+  <div class="sidebar-item side-item-stat right-motion">
+    <div class="sidebar-item-box">
+      <a href="/archives/">
+        
+        <span class="site-item-stat-count">16</span>
+        <span class="site-item-stat-name language" data-lan="article">文章</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="">
+        <span class="site-item-stat-count">8</span>
+        <span class="site-item-stat-name language" data-lan="category">分类</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="/tags/">
+        <span class="site-item-stat-count">8</span>
+        <span class="site-item-stat-name language" data-lan="tag">标签</span>
+      </a>
+    </div>
+  </div>
+  
+    
+      <div class="sidebar-item">
+        <span class="site-item-rss">
+            <i class="fa fa-rss"></i>
+            <a href="https://blog.popoup.top/atom.xml" target="_blank">RSS</a>
+        </span>
+      </div>
+    
+  
+  
+    <div class="sidebar-item sidebar-item-social">
+      <div class="social-item">
+        
+          
+            <a href="https://github.com/Aidanwangcy">
+              <i class="fa fa-github-alt" title="github"></i>
+            </a>
+          
+            <a href="https://twitter.com/Aidanwang6">
+              <i class="fa fa-twitter" title="twitter"></i>
+            </a>
+          
+            <a href="mailto:aidan.chongyang@gmail.com">
+              <i class="fa fa-envelope-o" title="Mail"></i>
+            </a>
+          
+        
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper auto-number auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li><a href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%86%85%E6%A0%B8%E6%80%81">用户态内核态</a>
+<ul>
+<li><a href="#%E5%86%85%E6%A0%B8%E6%80%81">内核态：</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E6%80%81">用户态：</a>
+<ul>
+<li><a href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7%E6%80%81-%E5%86%85%E6%A0%B8">切换：用户态-&gt; 内核：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C">并发和并行</a>
+<ul>
+<li><a href="#%E5%B9%B6%E5%8F%91">并发</a></li>
+<li><a href="#%E5%B9%B6%E8%A1%8C">并行</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E5%8D%8F%E7%A8%8B">进程、线程、协程</a>
+<ul>
+<li><a href="#%E8%BF%9B%E7%A8%8B">进程：</a>
+<ul>
+<li><a href="#%E4%B8%80%E8%88%AC%E7%94%B1%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%9D%97%E7%BB%84%E6%88%90">一般由：程序，数据集，进程控制块组成</a></li>
+<li><a href="#%E5%B1%80%E9%99%90%E5%88%9B%E5%BB%BA-%E6%92%A4%E9%94%80-%E5%88%87%E6%8D%A2%E7%9A%84%E5%BC%80%E9%94%80%E6%AF%94%E8%BE%83%E5%A4%A7">局限：创建、撤销、切换的开销比较大</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E4%B8%80%E4%B8%AA%E5%9F%BA%E6%9C%AC%E7%9A%84cpu%E6%89%A7%E8%A1%8C%E5%8D%95%E5%85%83%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E5%85%83%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E5%8F%AF%E4%BB%A5%E5%B9%B6%E5%8F%91%E8%BF%90%E8%A1%8C%E4%B8%94%E5%85%B1%E4%BA%AB%E7%9B%B8%E5%90%8C%E7%9A%84%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4">线程：一个基本的cpu执行单元，程序执行过程中的最小单元，线程之间可以并发运行且共享相同的地址空间。</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%AF%94%E8%BE%83%E5%A6%82%E4%B8%8B">线程与进程的比较如下：</a></li>
+<li><a href="#%E5%8D%8F%E7%A8%8B%E7%94%A8%E6%88%B7%E6%80%81%E7%9A%84%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%AE%8C%E5%85%A8%E7%94%B1%E7%94%A8%E6%88%B7%E6%8E%A7%E5%88%B6">协程：用户态的轻量级线程，调度完全由用户控制</a></li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2">进程切换</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%88%87%E6%8D%A2">线程切换</a></li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95">进程调度算法</a>
+<ul>
+<li><a href="#%E5%85%88%E6%9D%A5%E5%85%88%E6%9C%8D%E5%8A%A1fcfs%E4%B8%8D%E5%85%81%E8%AE%B8%E6%8A%A2%E5%8D%A0">先来先服务(FCFS)：不允许抢占</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E7%89%87%E8%BD%AE%E8%BD%AC">时间片轮转</a></li>
+<li><a href="#%E7%9F%AD%E4%BB%BB%E5%8A%A1%E4%BC%98%E5%85%88">短任务优先</a></li>
+<li><a href="#%E4%BC%98%E5%85%88%E7%BA%A7%E8%B0%83%E5%BA%A6">优先级调度</a></li>
+<li><a href="#%E6%B7%B7%E5%90%88%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E8%AE%BE%E7%BD%AE%E4%BA%86%E5%A4%9A%E4%B8%AA%E9%98%9F%E5%88%97%E5%90%8C%E6%97%B6%E7%BB%99%E4%BA%86%E6%AF%8F%E4%B8%AA%E9%98%9F%E5%88%97%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%94%E6%AF%8F%E4%B8%AA%E9%98%9F%E5%88%97%E7%9A%84%E6%97%B6%E9%97%B4%E7%89%87%E7%9A%84%E5%A4%A7%E5%B0%8F%E4%B9%9F%E4%B8%8D%E5%90%8C">混合调度算法：多级反馈设置了多个队列，同时给了每个队列不同的优先级，且每个队列的时间片的大小也不同。</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2">进程状态转换</a></li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%96%B9%E5%BC%8F">进程同步方式</a></li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F">进程通信方式</a></li>
+</ul>
+</li>
+<li><a href="#%E6%AD%BB%E9%94%81">死锁</a>
+<ul>
+<li><a href="#%E4%BA%A7%E7%94%9F%E7%9A%84%E6%9D%A1%E4%BB%B6">产生的条件</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81">解决死锁</a></li>
+<li><a href="#%E6%AD%BB%E9%94%81%E9%81%BF%E5%85%8D%E9%80%9A%E8%BF%87%E7%AE%97%E6%B3%95%E5%88%A4%E6%96%AD%E8%B5%84%E6%BA%90%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E5%8F%AF%E8%83%BD%E5%AF%BC%E8%87%B4%E5%BE%AA%E7%8E%AF%E7%AD%89%E5%BE%85%E7%9A%84%E5%BD%A2%E6%88%90%E5%B9%B6%E7%9B%B8%E5%BA%94%E5%86%B3%E7%AD%96">死锁避免：通过算法判断资源请求是否可能导致循环等待的形成并相应决策</a></li>
+<li><a href="#%E6%AD%BB%E9%94%81%E6%81%A2%E5%A4%8D">死锁恢复</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%A4%96%E5%AD%98%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">内存外存，虚拟内存</a>
+<ul>
+<li><a href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">内存管理机制</a>
+<ul>
+<li><a href="#%E5%9D%97%E5%BC%8F%E7%AE%A1%E7%90%86">块式管理 ：</a></li>
+<li><a href="#%E9%A1%B5%E5%BC%8F%E7%AE%A1%E7%90%86">页式管理 ：</a></li>
+<li><a href="#%E6%AE%B5%E5%BC%8F%E7%AE%A1%E7%90%86">段式管理 ：</a></li>
+<li><a href="#%E6%AE%B5%E9%A1%B5%E5%BC%8F%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">段页式管理机制 ：</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5">分页和分段</a></li>
+<li><a href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">虚拟内存</a>
+<ul>
+<li><a href="#%E6%9C%80%E4%BD%B3opt">最佳（OPT）</a></li>
+<li><a href="#%E6%9C%80%E8%BF%91%E6%9C%80%E4%B9%85%E6%9C%AA%E4%BD%BF%E7%94%A8lru">最近最久未使用（LRU）</a></li>
+<li><a href="#%E6%9C%80%E8%BF%91%E6%9C%AA%E4%BD%BF%E7%94%A8nru">最近未使用（NRU）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BA%94%E7%A7%8Dio%E6%A8%A1%E5%9E%8B">五种io模型</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+<ul>
+<li><a href="#%E5%A0%86-%E6%A0%88">堆、栈</a>
+<ul>
+<li><a href="#%E6%A0%88%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">栈（操作系统）：</a></li>
+<li><a href="#%E5%A0%86%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">堆（操作系统）：</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%8C%E5%85%A8%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91">完全搜索二叉树搜索二叉树</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+
+<script>
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
+      }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0] && elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
+    });
+  }
+
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
+    }
+  }
+
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
+    }
+  }
+
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
+  }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
+
+</script>
+            </div>
+          
+        
+      </div>
+    </div>
+  
+</div>
+<script>
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    window.Velocity(hideElement, 'stop');
+    window.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        window.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
+      }
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
+  }
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <section class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/">
+      findJob（二）：操作系统
+    </a>
+  </h1>
+  <div class="post-meta">
+    
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span class="language" data-lan="publish">发布于</span>
+      <span class="publish-time" data-t="2020-08-23 10:44:39">2020-08-23</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>13<span class="language" data-lan="minute">分钟</span></span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>3730<span class="pc-show language" data-lan="words">字数</span></span>
+    </span>
+    
+  </div>
+</section>
+            <div class="post-body next-md-body" id="post_body">
+              <p>这次是操作系统，其实我都写完了，只不过在添加，面试了这么多发现考操作系统的知识还是很多的，可以去文末的幕布看，我都及时更新在幕布里面了，祝早日拿到offer！</p>
+<!-- more -->
+<h1 id="用户态内核态">用户态内核态</h1>
+<h2 id="内核态">内核态：</h2>
+<p>cup可以访问内存所有数据，包括外围设备：硬盘，网卡等。cup可以将自己从一个程序切换到另一个程序。</p>
+<h2 id="用户态">用户态：</h2>
+<p>只能受限访问内存，不允许访问外围设备，占用cup的能力被剥夺，cup资源可以被其他程序获取</p>
+<h3 id="切换用户态-内核">切换：用户态-&gt; 内核：</h3>
+<ul>
+<li>突发不可预知的异常，例如缺页异常：<a href="https://www.cnblogs.com/jikexianfeng/articles/5647994.html">https://www.cnblogs.com/jikexianfeng/articles/5647994.html</a></li>
+<li>外围设备完成用户请求，发出中断，cpu去执行中断指令，如果指令是用户态就会发生切换</li>
+</ul>
+<h1 id="并发和并行">并发和并行</h1>
+<h2 id="并发">并发</h2>
+<p>就是在一段时间内，多个任务都会被处理；但在某一时刻，只有一个任务在执行。</p>
+<h2 id="并行">并行</h2>
+<p>就是在同一时刻，有多个任务在执行。</p>
+<h1 id="进程-线程-协程">进程、线程、协程</h1>
+<h2 id="进程">进程：</h2>
+<p>一个程序在一个数据集中的一次动态执行，即一个正在执行的程序；是CUP资源分配和调度的独立单位，进程是资源分配的基本单位</p>
+<h3 id="一般由程序数据集进程控制块组成">一般由：程序，数据集，进程控制块组成</h3>
+<ul>
+<li>程序：用来描述进程要完成哪些功能以及如何完成</li>
+<li>数据集：程序在执行时所需要的资源</li>
+<li>程序控制块：记录进程的外部特征，描述进程执行的变化过程，系统可以利用它来控制和管理进程，是系统感知进程存在的唯一标志。</li>
+</ul>
+<h3 id="局限创建-撤销-切换的开销比较大">局限：创建、撤销、切换的开销比较大</h3>
+<h2 id="线程一个基本的cpu执行单元程序执行过程中的最小单元线程之间可以并发运行且共享相同的地址空间">线程：一个基本的cpu执行单元，程序执行过程中的最小单元，线程之间可以并发运行且共享相同的地址空间。</h2>
+<ul>
+<li>由线程ID、程序计数器、寄存器集合、和堆栈组成</li>
+<li>优点：减少了程序并发执行时的开销，提高并发性能</li>
+<li>缺点：没有自己的系统资源，只拥有在运行时必不可少的资源，同一进程的不同线程可以共享资源</li>
+</ul>
+<h2 id="线程与进程的比较如下">线程与进程的比较如下：</h2>
+<ul>
+<li>进程是资源（包括内存、打开的文件等）分配的单位，线程是 CPU 调度的单位；</li>
+<li>进程拥有一个完整的资源平台，而线程只独享必不可少的资源，如寄存器和栈；</li>
+<li>线程同样具有就绪、阻塞、执行三种基本状态，同样具有状态之间的转换关系；</li>
+<li>线程能减少并发执行的时间和空间开销；</li>
+</ul>
+<h2 id="协程用户态的轻量级线程调度完全由用户控制">协程：用户态的轻量级线程，调度完全由用户控制</h2>
+<p>与传统的系统级线程和进程相比，协程的最大优势在于其&quot;轻量级&quot;，可以轻松创建上百万个而不会导致系统资源衰竭，而线程和进程通常最多也不能超过1万的。这也是协程也叫轻量级线程的原因。</p>
+<h2 id="进程切换">进程切换</h2>
+<ul>
+<li>保存处理机的上下文，包括程序计数器和寄存器</li>
+<li>更新PCB信息</li>
+<li>将进程的PCB移入到正确的队列，比如就绪队列或者阻塞队列</li>
+<li>选择一个就绪进程</li>
+<li>更新内存管理的数据结构</li>
+<li>恢复处理机的上下文</li>
+</ul>
+<h2 id="线程切换">线程切换</h2>
+<ul>
+<li>当两个线程不是属于同一个进程，则切换的过程就跟进程上下文切换一样；</li>
+<li>当两个线程是属于同一个进程，因为虚拟内存是共享的，所以在切换时，虚拟内存这些资源就保持不动，只需要切换线程的私有数据、寄存器等不共享的数据；</li>
+</ul>
+<h2 id="进程调度算法">进程调度算法</h2>
+<h3 id="先来先服务fcfs不允许抢占">先来先服务(FCFS)：不允许抢占</h3>
+<h3 id="时间片轮转">时间片轮转</h3>
+<h3 id="短任务优先">短任务优先</h3>
+<h3 id="优先级调度">优先级调度</h3>
+<h3 id="混合调度算法多级反馈设置了多个队列同时给了每个队列不同的优先级且每个队列的时间片的大小也不同">混合调度算法：多级反馈设置了多个队列，同时给了每个队列不同的优先级，且每个队列的时间片的大小也不同。</h3>
+<h2 id="进程状态转换">进程状态转换</h2>
+<figure data-type="image" tabindex="1"><img src="https://cdn.jsdelivr.net/gh/aidancy/FigureBed@master/img/6U7wap.png" alt="6U7wap" loading="lazy"></figure>
+<h2 id="进程同步方式">进程同步方式</h2>
+<ul>
+<li>临界区：任何时候最多只有一个进程可以进入临界区，</li>
+<li>互斥量：就是使用一个互斥的变量来直接制约多个进程，每个进程只有拥有这个变量才具有访问公共资源的权限</li>
+<li>信号量：pv操作</li>
+<li>管程：将表示共享资源的数据结构还有相关的操作，包括同步机制，都集中并封装到一起。所有进程都只能通过管程间接访问临界资源</li>
+</ul>
+<h2 id="进程通信方式">进程通信方式</h2>
+<ul>
+<li>管道/匿名管道(Pipes) ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。</li>
+<li>有名管道(Names Pipes) : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循先进先出(first in first out)。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。</li>
+<li>信号(Signal) ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；</li>
+<li>消息队列(Message Queuing) ：消息队列是消息的链表,具有特定的格式,存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显示地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺。</li>
+<li>信号量(Semaphores) ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
+<li>共享内存(Shared memory) ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。</li>
+<li>套接字(Sockets) : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP/IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。</li>
+</ul>
+<h1 id="死锁">死锁</h1>
+<h2 id="产生的条件">产生的条件</h2>
+<ul>
+<li>互斥：每个资源要么已经分配给了一个进程，要么就是可用的。</li>
+<li>占有和等待：已经得到了某个资源的进程可以再请求新的资源。</li>
+<li>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。</li>
+<li>环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源</li>
+</ul>
+<h2 id="解决死锁">解决死锁</h2>
+<ul>
+<li>鸵鸟策略：就是直接忽略死锁</li>
+<li>死锁预防：死锁预防是指通过破坏死锁产生的四个必要条件中的一个或多个，以避免发生死锁。</li>
+<li>破坏互斥：不让资源被一个进程独占，可通过假脱机技术允许多个进程同时访问资源；</li>
+<li>破坏占有和等待：有两种方案，</li>
+</ul>
+<ul>
+<li>已拥有资源的进程不能再去请求其他资源。一种实现方法是要求进程在开始执行前请求需要的所有资源。</li>
+<li>要求进程请求资源时，先暂时释放其当前拥有的所有资源，再尝试一次获取所需的全部资源。</li>
+</ul>
+<ul>
+<li>破坏不可抢占：有些资源可以通过虚拟化方式实现可抢占；</li>
+<li>破坏循环等待：有两种方案：</li>
+</ul>
+<ul>
+<li>一种方法是保证每个进程在任何时刻只能占用一个资源，如果要请求另一个资源，必须先释放第一个资源；</li>
+<li>另一种方法是将所有资源进行统一编号，进程可以在任何时刻请求资源，但要求进程必须按照顺序请求资源。</li>
+</ul>
+<h2 id="死锁避免通过算法判断资源请求是否可能导致循环等待的形成并相应决策">死锁避免：通过算法判断资源请求是否可能导致循环等待的形成并相应决策</h2>
+<ul>
+<li>线程启动拒绝：如果一个线程的请求会引发死锁，则不允许其启动。</li>
+<li>资源分配拒绝：如果一个线程增加的资源请求会导致死锁，则不允许此申请。</li>
+</ul>
+<h2 id="死锁恢复">死锁恢复</h2>
+<ul>
+<li>取消所有死锁相关线程，简单粗暴，但也确实是最常用的</li>
+<li>把每个死锁线程回滚到某些检查点，然后重启</li>
+<li>连续取消死锁线程直到死锁解除，顺序基于特定最小代价原则</li>
+<li>连续抢占资源直到死锁解除</li>
+</ul>
+<h1 id="内存外存虚拟内存">内存外存，虚拟内存</h1>
+<h2 id="内存管理机制">内存管理机制</h2>
+<h3 id="块式管理">块式管理 ：</h3>
+<p>远古时代的计算机操系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。</p>
+<h3 id="页式管理">页式管理 ：</h3>
+<p>把主存分为大小相等且固定的一页一页的形式，页较小，相对相比于块式管理的划分力度更大，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。</p>
+<h3 id="段式管理">段式管理 ：</h3>
+<p>页式管理虽然提高了内存利用率，但是页式管理其中的页实际并无任何实际意义。 段式管理把主存分为一段段的，每一段的空间又要比一页的空间小很多 。但是，最重要的是段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。</p>
+<h3 id="段页式管理机制">段页式管理机制 ：</h3>
+<p>段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 段页式管理机制 中段与段之间以及段的内部的都是离散的。<br>
+操作系统将将内存抽象为地址空间，每个程序拥有自己的地址空间（即自己的需要的内存）-----&gt;地址空间被分为很多块，即每个块是一页-----&gt;页会被映射到物理内存</p>
+<h2 id="分页和分段">分页和分段</h2>
+<p>分页对程序员是透明的，但是分段需要程序员显式划分每个段。<br>
+分页的地址空间是一维地址空间，分段是二维的。<br>
+页的大小不可变，段的大小可以动态改变。<br>
+分页主要用于实现虚拟内存，从而获得更大的地址空间；分段主要是为了使程序和数据可以被划分为逻辑上独立的地址空间并且有助于共享和保护</p>
+<h2 id="虚拟内存">虚拟内存</h2>
+<p>虚拟内存为每个进程提供了一个一致的、私有的地址空间，让物理内存扩充成更大的逻辑内存，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）<br>
+所有的页并不一定被映射到物理内存，也有可能映射到硬盘，当程序引用了不再物理内存的页，就会触发缺页中断，将缺失的部分装入内存，重新执行指令<br>
+缺页中断出发会使用页面置换算法进行内存调度</p>
+<h3 id="最佳opt">最佳（OPT）</h3>
+<p>选出的页面将是最长时间不访问的，这时一种理论上的算法，即下次访问它的时间相比其它页面间隔的时间最长；但是现实中并不知道什么页面的访问将会间隔最长；</p>
+<h3 id="最近最久未使用lru">最近最久未使用（LRU）</h3>
+<p>无法知道时间，但是可以知道某个页面的使用情况，如果已经使用的页面长久未使用，则将这个页面进行置换；<br>
+需要在内存中维护一个链表，每次有一个页面被使用，就将该链表的头设置成该页，因此链表的尾部就是长久未使用的页面；缺点就是每次访问都要对链表有一个更新。代价高；</p>
+<h3 id="最近未使用nru">最近未使用（NRU）</h3>
+<p>这种算法为每一个页设置了两个状态位，如果该页被使用，R = 1；如果该页被修改设置M = 1；R会定时清理成0；</p>
+<h1 id="五种io模型">五种io模型</h1>
+<p><a href="https://blog.csdn.net/ZWE7616175/article/details/80591587">https://blog.csdn.net/ZWE7616175/article/details/80591587</a><br>
+同步io<br>
+阻塞IO、非阻塞IO、信号驱动IO、IO多路转接<br>
+异步IO<br>
+阻塞程度：阻塞IO&gt;非阻塞IO&gt;多路转接IO&gt;信号驱动IO&gt;异步IO</p>
+<h1 id="数据结构">数据结构</h1>
+<h2 id="堆-栈">堆、栈</h2>
+<h3 id="栈操作系统">栈（操作系统）：</h3>
+<p>由操作系统自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。</p>
+<h3 id="堆操作系统">堆（操作系统）：</h3>
+<p>一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS（操作系统）回收，分配方式倒是类似于链表。</p>
+<h2 id="完全搜索二叉树搜索二叉树">完全搜索二叉树搜索二叉树</h2>
+<blockquote>
+<p>同样可以去幕布。<a href="https://share.mubu.com/doc/5USN-gwG03U">https://share.mubu.com/doc/5USN-gwG03U</a></p>
+</blockquote>
+
+            </div>
+            
+            
+              <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong class="language" data-lan="author">本文作者：</strong>
+      Aidan
+    </li>
+    <li class="post-copyright-link">
+      <strong class="language" data-lan="link">本文链接：</strong>
+      <a href="https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/" title="findJob（二）：操作系统">https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong class="language" data-lan="copyright">版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
+      
+        <i class="fa fa-chevron-left"></i>
+        <a class="nav-pc-next" title="（小技巧）取消终端的conda base自动激活" href="https://blog.popoup.top/post/xiao-ji-qiao-qu-xiao-zhong-duan-de-conda-base-zi-dong-ji-huo/">（小技巧）取消终端的conda base自动激活</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="（小技巧）取消终端的conda base自动激活" href="https://blog.popoup.top/post/xiao-ji-qiao-qu-xiao-zhong-duan-de-conda-base-zi-dong-ji-huo/">上一篇</a>
+      
+    </div>
+    <div class="nav-next">
+      
+        <a class="nav-pc-next" title="findJob（一）：数据库复习" href="https://blog.popoup.top/post/findjobshu-ju-ku-fu-xi/">findJob（一）：数据库复习</a>
+        <a class="nav-mobile-next" title="findJob（一）：数据库复习" href="https://blog.popoup.top/post/findjobshu-ju-ku-fu-xi/">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
+      
+    </div>
+  </div>
+</div>
+            
+            
+  
+    
+      <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '36a0b20ccd06c3234ff4',
+    clientSecret: 'cdec57f5b537c9390995636abc7ffdb0c17dd5bd',
+    repo: 'aidancy.github.io',
+    owner: 'aidancy',
+    admin: ['aidancy'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+  gitalk.render('gitalk-container')
+</script>
+    
+    
+  
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-box">
+  <footer class="footer">
+    <div class="copyright">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2019-2020 Theme By <a
+        href="https://github.com/hsxyhao/gridea-theme-next" target="_blank">HsxyHao</a>
+    </div>
+    <div class="poweredby">
+      <a href='https://status.popoup.top/'>My Service Status Page</a>
+<br>
+<a href='https://run.popoup.top/'>My Running record</a>
+    </div>
+  </footer>
+  
+  
+  <div class="pisces back-to-top" id="back_to_top">
+    <i class="fa fa-arrow-up"></i>
+    
+    <span class="scrollpercent">
+      <span id="back_to_top_text">0</span>%
+    </span>
+    
+  </div>
+  
+  
+  
+</div>
+<script>
+
+  let sideBarOpen = 'sidebar-open';
+  let body = document.body;
+  let back2Top = document.querySelector('#back_to_top'),
+    back2TopText = document.querySelector('#back_to_top_text'),
+    drawerBox = document.querySelector('#drawer_box'),
+    rightSideBar = document.querySelector('.sidebar'),
+    viewport = document.querySelector('body');
+
+  function scrollAnimation(currentY, targetY) {
+
+    let needScrollTop = targetY - currentY
+    let _currentY = currentY
+    setTimeout(() => {
+      const dist = Math.ceil(needScrollTop / 10)
+      _currentY += dist
+      window.scrollTo(_currentY, currentY)
+      if (needScrollTop > 10 || needScrollTop < -10) {
+        scrollAnimation(_currentY, targetY)
+      } else {
+        window.scrollTo(_currentY, targetY)
+      }
+    }, 1)
+  }
+
+  back2Top.addEventListener("click", function (e) {
+    scrollAnimation(document.scrollingElement.scrollTop, 0);
+    e.stopPropagation();
+    return false;
+  });
+
+  window.addEventListener('scroll', function (e) {
+    let percent = document.scrollingElement.scrollTop / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight) * 100;
+    if (percent > 1 && !back2Top.classList.contains('back-top-active')) {
+      back2Top.classList.add('back-top-active');
+    }
+    if (percent == 0) {
+      back2Top.classList.remove('back-top-active');
+    }
+    if (back2TopText) {
+      back2TopText.textContent = Math.floor(percent);
+    }
+  });
+
+
+  let hasCacu = false;
+  window.onresize = function () {
+    calcuHeight();
+  }
+
+  function calcuHeight() {
+    // 动态调整站点概览高度
+    if (!hasCacu && back2Top.classList.contains('pisces') || back2Top.classList.contains('gemini')) {
+      let sideBar = document.querySelector('.sidebar');
+      let navUl = document.querySelector('#site_nav');
+      sideBar.style = 'margin-top:' + (navUl.offsetHeight + navUl.offsetTop + 15) + 'px;';
+      hasCacu = true;
+    }
+  }
+  calcuHeight();
+
+  let open = false, MOTION_TIME = 300, RIGHT_MOVE_DIS = '320px';
+
+  if (drawerBox) {
+    let rightMotions = document.querySelectorAll('.right-motion');
+    let right = drawerBox.classList.contains('right');
+
+    let transitionDir = right ? "transition.slideRightIn" : "transition.slideLeftIn";
+
+    let openProp, closeProp;
+    if (right) {
+      openProp = {
+        paddingRight: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingRight: '0px'
+      };
+    } else {
+      openProp = {
+        paddingLeft: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingLeft: '0px'
+      };
+    }
+
+    drawerBox.onclick = function () {
+      open = !open;
+      window.Velocity(rightSideBar, 'stop');
+      window.Velocity(viewport, 'stop');
+      window.Velocity(rightMotions, 'stop');
+      if (open) {
+        window.Velocity(rightSideBar, {
+          width: RIGHT_MOVE_DIS
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            window.Velocity(rightMotions, transitionDir, {});
+          }
+        })
+        window.Velocity(viewport, openProp, {
+          duration: MOTION_TIME
+        });
+      } else {
+        window.Velocity(rightSideBar, {
+          width: '0px'
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            window.Velocity(rightMotions, {
+              opacity: 0
+            });
+          }
+        })
+        window.Velocity(viewport, closeProp, {
+          duration: MOTION_TIME
+        });
+      }
+      for (let i = 0; i < drawerBox.children.length; i++) {
+        drawerBox.children[i].classList.toggle('muse-line');
+      }
+      drawerBox.classList.toggle(sideBarOpen);
+    }
+  }
+
+  // 链接跳转
+  let newWindow = 'true'
+  if (newWindow === 'true') {
+    let links = document.querySelectorAll('.post-body a')
+    links.forEach(item => {
+      if (!item.classList.contains('btn')) {
+        item.setAttribute("target", "_blank");
+      }
+    })
+  }
+
+  let faSearch = document.querySelector('#fa_search');
+  faSearch.addEventListener('click', function () {
+    document.querySelector('#search_mask').style = ''
+  })
+
+  // 代码高亮
+  hljs.initHighlightingOnLoad();
+  
+  // 离开当前页title变化
+  var leaveTitle = "";
+  if (leaveTitle) {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState == 'hidden') {
+        normal_title = document.title;
+        document.title = leaveTitle;
+      } else {
+        document.title = normal_title;
+      }
+    });
+  }
+
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script>
+  let images = document.querySelectorAll('.section img');
+  console.log(images);
+  images.forEach(image => {
+    var parent = image.parentElement;
+    var next = image.nextElementSibling;
+    parent.removeChild(image);
+    var aelem = document.createElement('a');
+    aelem.href = image.src;
+    aelem.dataset['fancybox'] = 'images';
+    aelem.dataset['rel'] = 'fancybox-button';
+    aelem.classList.add('fancybox');
+    aelem.appendChild(image);
+    parent.insertBefore(aelem, next);
+  })
+</script>
+    <div class="reward-mask" style="display: none;">
+  <div class="reward-relative">
+    <span class="close" aria-hidden="true">x</span>
+    <div class="reward-body">
+      <h2>感谢您的支持，我会继续努力的!</h2>
+      <div class="reward-img-box">
+        <div style="position: relative; width: 140px; height: 140px;">
+          
+          
+          
+        </div>
+      </div>
+      <p class="reward-word">扫码打赏，你说多少就多少</p>
+      <p class="reward-tip">打开微信扫一扫，即可进行扫码打赏哦</p>
+    </div>
+    <div class="bottom">
+      
+      
+    </div>
+  </div>
+</div>
+<style>
+  .reward-mask {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00000054;
+  }
+
+  .reward-relative {
+    position: relative;
+    width: 480px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #fff;
+    top: 50%;
+    margin-top: -205px;
+  }
+
+  .reward-relative .close {
+    position: absolute;
+    right: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    color: #929292;
+  }
+
+  .reward-body {
+    padding: 40px 20px 20px;
+  }
+
+  .bottom {
+    display: flex;
+  }
+
+  .reward-btn {
+    text-align: center;
+  }
+
+  .reward-btn-text {
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    background-color: #ff9734;
+    color: #FFF;
+    margin-top: 20px;
+  }
+
+  .pay-text {
+    margin-top: 10px;
+    padding: 10px;
+    flex: 1;
+    transition: all .2s linear;
+  }
+
+  .pay-text:hover {
+    background-color: #a5a5a536;
+  }
+
+  .reward-body h2 {
+    padding-top: 10px;
+    text-align: center;
+    color: #a3a3a3;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 0 20px;
+  }
+
+  .reward-body h2:after,
+  .reward-body h2:before {
+    font-family: Arial, Helvetica, sans-serif;
+    background: 0 0;
+    width: 0;
+    height: 0;
+    font-style: normal;
+    color: #eee;
+    font-size: 80px;
+    position: absolute;
+    top: 20px;
+  }
+
+  .reward-body h2:before {
+    content: '\201c';
+    left: 50px;
+  }
+
+  .reward-body h2:after {
+    content: '\201d';
+    right: 80px;
+  }
+
+  .reward-img-box {
+    display: inline-block;
+    padding: 10px;
+    border: 6px solid #ea5f00;
+    margin: 0 auto;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .reward-img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 767px) {
+    .reward-relative {
+      height: 100%;
+      top: 0px;
+      margin-top: 0;
+      width: auto;
+    }
+
+    .reward-relative .bottom {
+      flex-direction: column;
+    }
+
+    .reward-relative .pay-text {
+      width: 80%;
+      margin: 5px auto;
+      border: 1px solid silver;
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .reward-body h2:after {
+      right: 40px;
+    }
+
+    .reward-body h2:after,
+    .reward-body h2:before {
+      font-size: 60px;
+    }
+
+    .reward-body h2:before {
+      left: 20px;
+    }
+  }
+</style>
+<script>
+  !function () {
+    var mask = document.querySelector('.reward-mask');
+    let close = document.querySelector('.reward-relative .close');
+    let rewardBtn = document.querySelector('.reward-btn');
+
+    let zfb = document.querySelector('#zfb'),
+      wx = document.querySelector('#wx'),
+      zfbBtn = document.querySelector('#zfbBtn'),
+      wxBtn = document.querySelector('#wxBtn');
+
+    if (zfbBtn && wxBtn) {
+      zfbBtn.addEventListener('click', () => {
+        window.Velocity(zfb, 'transition.slideLeftIn', {
+          duration: 400
+        });
+        window.Velocity(wx, 'transition.slideRightOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+
+      wxBtn.addEventListener('click', () => {
+        window.Velocity(wx, 'transition.slideRightIn', {
+          duration: 400
+        });
+        window.Velocity(zfb, 'transition.slideLeftOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+    }
+
+    rewardBtn.addEventListener('click', (e) => {
+      window.Velocity(mask, 'transition.slideDownIn', {
+        duration: 400
+      })
+    });
+
+    close.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.Velocity(mask, 'transition.slideUpOut', {
+        duration: 400
+      })
+    })
+  }()
+</script>
+
+  </div>
+</body>
+
+<div class="search-mask" id="search_mask" style="display: none;">
+  <div class="search-box">
+    <div class="search-title">
+      <i class="fa fa-search"></i>
+      <div class="input-box">
+        <input id="search" type="text" class="language" data-lan="search" placeholder="搜索">
+      </div>
+      <i id="close" class="fa fa-times-circle"></i>
+    </div>
+    <div class="stat-box">
+      <span id="stat_count">0</span><span class="language" data-lan="stat">条相关条目，使用了</span><span id="stat_times">0</span><span class="language" data-lan="stat-time">毫秒</span>
+      <hr>
+    </div>
+    <div class="result" id="result">
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/xiao-ji-qiao-qu-xiao-zhong-duan-de-conda-base-zi-dong-ji-huo/"" data-c="
+          &lt;h2 id=&#34;安装conda后每次打开终端都会自动进入base&#34;&gt;安装conda后，每次打开终端都会自动进入base&lt;/h2&gt;
+&lt;p&gt;两种方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;麻烦的
+&lt;ul&gt;
+&lt;li&gt;每次使用 &lt;code&gt;conda deactivate&lt;/code&gt; 退出当前环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;永久的
+&lt;ul&gt;
+&lt;li&gt;设置&lt;code&gt;auto_activate_base&lt;/code&gt;参数为&lt;code&gt;false&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;即&lt;code&gt;conda config --set auto_activate_base false&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;要使用base环境使用&lt;code&gt;conda activate base&lt;/code&gt;即可&lt;/li&gt;
+&lt;li&gt;如果希望保留打开terminal就进入base重新设置为&lt;code&gt;true&lt;/code&gt;&lt;br&gt;
+- 即&lt;code&gt;conda config --set auto_activate_base true&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+">（小技巧）取消终端的conda base自动激活</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/"" data-c="
+          &lt;p&gt;这次是操作系统，其实我都写完了，只不过在添加，面试了这么多发现考操作系统的知识还是很多的，可以去文末的幕布看，我都及时更新在幕布里面了，祝早日拿到offer！&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h1 id=&#34;用户态内核态&#34;&gt;用户态内核态&lt;/h1&gt;
+&lt;h2 id=&#34;内核态&#34;&gt;内核态：&lt;/h2&gt;
+&lt;p&gt;cup可以访问内存所有数据，包括外围设备：硬盘，网卡等。cup可以将自己从一个程序切换到另一个程序。&lt;/p&gt;
+&lt;h2 id=&#34;用户态&#34;&gt;用户态：&lt;/h2&gt;
+&lt;p&gt;只能受限访问内存，不允许访问外围设备，占用cup的能力被剥夺，cup资源可以被其他程序获取&lt;/p&gt;
+&lt;h3 id=&#34;切换用户态-内核&#34;&gt;切换：用户态-&amp;gt; 内核：&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;突发不可预知的异常，例如缺页异常：&lt;a href=&#34;https://www.cnblogs.com/jikexianfeng/articles/5647994.html&#34;&gt;https://www.cnblogs.com/jikexianfeng/articles/5647994.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;外围设备完成用户请求，发出中断，cpu去执行中断指令，如果指令是用户态就会发生切换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;并发和并行&#34;&gt;并发和并行&lt;/h1&gt;
+&lt;h2 id=&#34;并发&#34;&gt;并发&lt;/h2&gt;
+&lt;p&gt;就是在一段时间内，多个任务都会被处理；但在某一时刻，只有一个任务在执行。&lt;/p&gt;
+&lt;h2 id=&#34;并行&#34;&gt;并行&lt;/h2&gt;
+&lt;p&gt;就是在同一时刻，有多个任务在执行。&lt;/p&gt;
+&lt;h1 id=&#34;进程-线程-协程&#34;&gt;进程、线程、协程&lt;/h1&gt;
+&lt;h2 id=&#34;进程&#34;&gt;进程：&lt;/h2&gt;
+&lt;p&gt;一个程序在一个数据集中的一次动态执行，即一个正在执行的程序；是CUP资源分配和调度的独立单位，进程是资源分配的基本单位&lt;/p&gt;
+&lt;h3 id=&#34;一般由程序数据集进程控制块组成&#34;&gt;一般由：程序，数据集，进程控制块组成&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;程序：用来描述进程要完成哪些功能以及如何完成&lt;/li&gt;
+&lt;li&gt;数据集：程序在执行时所需要的资源&lt;/li&gt;
+&lt;li&gt;程序控制块：记录进程的外部特征，描述进程执行的变化过程，系统可以利用它来控制和管理进程，是系统感知进程存在的唯一标志。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;局限创建-撤销-切换的开销比较大&#34;&gt;局限：创建、撤销、切换的开销比较大&lt;/h3&gt;
+&lt;h2 id=&#34;线程一个基本的cpu执行单元程序执行过程中的最小单元线程之间可以并发运行且共享相同的地址空间&#34;&gt;线程：一个基本的cpu执行单元，程序执行过程中的最小单元，线程之间可以并发运行且共享相同的地址空间。&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;由线程ID、程序计数器、寄存器集合、和堆栈组成&lt;/li&gt;
+&lt;li&gt;优点：减少了程序并发执行时的开销，提高并发性能&lt;/li&gt;
+&lt;li&gt;缺点：没有自己的系统资源，只拥有在运行时必不可少的资源，同一进程的不同线程可以共享资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程与进程的比较如下&#34;&gt;线程与进程的比较如下：&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;进程是资源（包括内存、打开的文件等）分配的单位，线程是 CPU 调度的单位；&lt;/li&gt;
+&lt;li&gt;进程拥有一个完整的资源平台，而线程只独享必不可少的资源，如寄存器和栈；&lt;/li&gt;
+&lt;li&gt;线程同样具有就绪、阻塞、执行三种基本状态，同样具有状态之间的转换关系；&lt;/li&gt;
+&lt;li&gt;线程能减少并发执行的时间和空间开销；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;协程用户态的轻量级线程调度完全由用户控制&#34;&gt;协程：用户态的轻量级线程，调度完全由用户控制&lt;/h2&gt;
+&lt;p&gt;与传统的系统级线程和进程相比，协程的最大优势在于其&amp;quot;轻量级&amp;quot;，可以轻松创建上百万个而不会导致系统资源衰竭，而线程和进程通常最多也不能超过1万的。这也是协程也叫轻量级线程的原因。&lt;/p&gt;
+&lt;h2 id=&#34;进程切换&#34;&gt;进程切换&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;保存处理机的上下文，包括程序计数器和寄存器&lt;/li&gt;
+&lt;li&gt;更新PCB信息&lt;/li&gt;
+&lt;li&gt;将进程的PCB移入到正确的队列，比如就绪队列或者阻塞队列&lt;/li&gt;
+&lt;li&gt;选择一个就绪进程&lt;/li&gt;
+&lt;li&gt;更新内存管理的数据结构&lt;/li&gt;
+&lt;li&gt;恢复处理机的上下文&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线程切换&#34;&gt;线程切换&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;当两个线程不是属于同一个进程，则切换的过程就跟进程上下文切换一样；&lt;/li&gt;
+&lt;li&gt;当两个线程是属于同一个进程，因为虚拟内存是共享的，所以在切换时，虚拟内存这些资源就保持不动，只需要切换线程的私有数据、寄存器等不共享的数据；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;进程调度算法&#34;&gt;进程调度算法&lt;/h2&gt;
+&lt;h3 id=&#34;先来先服务fcfs不允许抢占&#34;&gt;先来先服务(FCFS)：不允许抢占&lt;/h3&gt;
+&lt;h3 id=&#34;时间片轮转&#34;&gt;时间片轮转&lt;/h3&gt;
+&lt;h3 id=&#34;短任务优先&#34;&gt;短任务优先&lt;/h3&gt;
+&lt;h3 id=&#34;优先级调度&#34;&gt;优先级调度&lt;/h3&gt;
+&lt;h3 id=&#34;混合调度算法多级反馈设置了多个队列同时给了每个队列不同的优先级且每个队列的时间片的大小也不同&#34;&gt;混合调度算法：多级反馈设置了多个队列，同时给了每个队列不同的优先级，且每个队列的时间片的大小也不同。&lt;/h3&gt;
+&lt;h2 id=&#34;进程状态转换&#34;&gt;进程状态转换&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/aidancy/FigureBed@master/img/6U7wap.png&#34; alt=&#34;6U7wap&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;进程同步方式&#34;&gt;进程同步方式&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;临界区：任何时候最多只有一个进程可以进入临界区，&lt;/li&gt;
+&lt;li&gt;互斥量：就是使用一个互斥的变量来直接制约多个进程，每个进程只有拥有这个变量才具有访问公共资源的权限&lt;/li&gt;
+&lt;li&gt;信号量：pv操作&lt;/li&gt;
+&lt;li&gt;管程：将表示共享资源的数据结构还有相关的操作，包括同步机制，都集中并封装到一起。所有进程都只能通过管程间接访问临界资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;进程通信方式&#34;&gt;进程通信方式&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;管道/匿名管道(Pipes) ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。&lt;/li&gt;
+&lt;li&gt;有名管道(Names Pipes) : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循先进先出(first in first out)。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。&lt;/li&gt;
+&lt;li&gt;信号(Signal) ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；&lt;/li&gt;
+&lt;li&gt;消息队列(Message Queuing) ：消息队列是消息的链表,具有特定的格式,存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显示地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺。&lt;/li&gt;
+&lt;li&gt;信号量(Semaphores) ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。&lt;/li&gt;
+&lt;li&gt;共享内存(Shared memory) ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。&lt;/li&gt;
+&lt;li&gt;套接字(Sockets) : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP/IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;死锁&#34;&gt;死锁&lt;/h1&gt;
+&lt;h2 id=&#34;产生的条件&#34;&gt;产生的条件&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;互斥：每个资源要么已经分配给了一个进程，要么就是可用的。&lt;/li&gt;
+&lt;li&gt;占有和等待：已经得到了某个资源的进程可以再请求新的资源。&lt;/li&gt;
+&lt;li&gt;不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。&lt;/li&gt;
+&lt;li&gt;环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;解决死锁&#34;&gt;解决死锁&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;鸵鸟策略：就是直接忽略死锁&lt;/li&gt;
+&lt;li&gt;死锁预防：死锁预防是指通过破坏死锁产生的四个必要条件中的一个或多个，以避免发生死锁。&lt;/li&gt;
+&lt;li&gt;破坏互斥：不让资源被一个进程独占，可通过假脱机技术允许多个进程同时访问资源；&lt;/li&gt;
+&lt;li&gt;破坏占有和等待：有两种方案，&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;已拥有资源的进程不能再去请求其他资源。一种实现方法是要求进程在开始执行前请求需要的所有资源。&lt;/li&gt;
+&lt;li&gt;要求进程请求资源时，先暂时释放其当前拥有的所有资源，再尝试一次获取所需的全部资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;破坏不可抢占：有些资源可以通过虚拟化方式实现可抢占；&lt;/li&gt;
+&lt;li&gt;破坏循环等待：有两种方案：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;一种方法是保证每个进程在任何时刻只能占用一个资源，如果要请求另一个资源，必须先释放第一个资源；&lt;/li&gt;
+&lt;li&gt;另一种方法是将所有资源进行统一编号，进程可以在任何时刻请求资源，但要求进程必须按照顺序请求资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;死锁避免通过算法判断资源请求是否可能导致循环等待的形成并相应决策&#34;&gt;死锁避免：通过算法判断资源请求是否可能导致循环等待的形成并相应决策&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;线程启动拒绝：如果一个线程的请求会引发死锁，则不允许其启动。&lt;/li&gt;
+&lt;li&gt;资源分配拒绝：如果一个线程增加的资源请求会导致死锁，则不允许此申请。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;死锁恢复&#34;&gt;死锁恢复&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;取消所有死锁相关线程，简单粗暴，但也确实是最常用的&lt;/li&gt;
+&lt;li&gt;把每个死锁线程回滚到某些检查点，然后重启&lt;/li&gt;
+&lt;li&gt;连续取消死锁线程直到死锁解除，顺序基于特定最小代价原则&lt;/li&gt;
+&lt;li&gt;连续抢占资源直到死锁解除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;内存外存虚拟内存&#34;&gt;内存外存，虚拟内存&lt;/h1&gt;
+&lt;h2 id=&#34;内存管理机制&#34;&gt;内存管理机制&lt;/h2&gt;
+&lt;h3 id=&#34;块式管理&#34;&gt;块式管理 ：&lt;/h3&gt;
+&lt;p&gt;远古时代的计算机操系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。&lt;/p&gt;
+&lt;h3 id=&#34;页式管理&#34;&gt;页式管理 ：&lt;/h3&gt;
+&lt;p&gt;把主存分为大小相等且固定的一页一页的形式，页较小，相对相比于块式管理的划分力度更大，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。&lt;/p&gt;
+&lt;h3 id=&#34;段式管理&#34;&gt;段式管理 ：&lt;/h3&gt;
+&lt;p&gt;页式管理虽然提高了内存利用率，但是页式管理其中的页实际并无任何实际意义。 段式管理把主存分为一段段的，每一段的空间又要比一页的空间小很多 。但是，最重要的是段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。&lt;/p&gt;
+&lt;h3 id=&#34;段页式管理机制&#34;&gt;段页式管理机制 ：&lt;/h3&gt;
+&lt;p&gt;段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 段页式管理机制 中段与段之间以及段的内部的都是离散的。&lt;br&gt;
+操作系统将将内存抽象为地址空间，每个程序拥有自己的地址空间（即自己的需要的内存）-----&amp;gt;地址空间被分为很多块，即每个块是一页-----&amp;gt;页会被映射到物理内存&lt;/p&gt;
+&lt;h2 id=&#34;分页和分段&#34;&gt;分页和分段&lt;/h2&gt;
+&lt;p&gt;分页对程序员是透明的，但是分段需要程序员显式划分每个段。&lt;br&gt;
+分页的地址空间是一维地址空间，分段是二维的。&lt;br&gt;
+页的大小不可变，段的大小可以动态改变。&lt;br&gt;
+分页主要用于实现虚拟内存，从而获得更大的地址空间；分段主要是为了使程序和数据可以被划分为逻辑上独立的地址空间并且有助于共享和保护&lt;/p&gt;
+&lt;h2 id=&#34;虚拟内存&#34;&gt;虚拟内存&lt;/h2&gt;
+&lt;p&gt;虚拟内存为每个进程提供了一个一致的、私有的地址空间，让物理内存扩充成更大的逻辑内存，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）&lt;br&gt;
+所有的页并不一定被映射到物理内存，也有可能映射到硬盘，当程序引用了不再物理内存的页，就会触发缺页中断，将缺失的部分装入内存，重新执行指令&lt;br&gt;
+缺页中断出发会使用页面置换算法进行内存调度&lt;/p&gt;
+&lt;h3 id=&#34;最佳opt&#34;&gt;最佳（OPT）&lt;/h3&gt;
+&lt;p&gt;选出的页面将是最长时间不访问的，这时一种理论上的算法，即下次访问它的时间相比其它页面间隔的时间最长；但是现实中并不知道什么页面的访问将会间隔最长；&lt;/p&gt;
+&lt;h3 id=&#34;最近最久未使用lru&#34;&gt;最近最久未使用（LRU）&lt;/h3&gt;
+&lt;p&gt;无法知道时间，但是可以知道某个页面的使用情况，如果已经使用的页面长久未使用，则将这个页面进行置换；&lt;br&gt;
+需要在内存中维护一个链表，每次有一个页面被使用，就将该链表的头设置成该页，因此链表的尾部就是长久未使用的页面；缺点就是每次访问都要对链表有一个更新。代价高；&lt;/p&gt;
+&lt;h3 id=&#34;最近未使用nru&#34;&gt;最近未使用（NRU）&lt;/h3&gt;
+&lt;p&gt;这种算法为每一个页设置了两个状态位，如果该页被使用，R = 1；如果该页被修改设置M = 1；R会定时清理成0；&lt;/p&gt;
+&lt;h1 id=&#34;五种io模型&#34;&gt;五种io模型&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/ZWE7616175/article/details/80591587&#34;&gt;https://blog.csdn.net/ZWE7616175/article/details/80591587&lt;/a&gt;&lt;br&gt;
+同步io&lt;br&gt;
+阻塞IO、非阻塞IO、信号驱动IO、IO多路转接&lt;br&gt;
+异步IO&lt;br&gt;
+阻塞程度：阻塞IO&amp;gt;非阻塞IO&amp;gt;多路转接IO&amp;gt;信号驱动IO&amp;gt;异步IO&lt;/p&gt;
+&lt;h1 id=&#34;数据结构&#34;&gt;数据结构&lt;/h1&gt;
+&lt;h2 id=&#34;堆-栈&#34;&gt;堆、栈&lt;/h2&gt;
+&lt;h3 id=&#34;栈操作系统&#34;&gt;栈（操作系统）：&lt;/h3&gt;
+&lt;p&gt;由操作系统自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。&lt;/p&gt;
+&lt;h3 id=&#34;堆操作系统&#34;&gt;堆（操作系统）：&lt;/h3&gt;
+&lt;p&gt;一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS（操作系统）回收，分配方式倒是类似于链表。&lt;/p&gt;
+&lt;h2 id=&#34;完全搜索二叉树搜索二叉树&#34;&gt;完全搜索二叉树搜索二叉树&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;同样可以去幕布。&lt;a href=&#34;https://share.mubu.com/doc/5USN-gwG03U&#34;&gt;https://share.mubu.com/doc/5USN-gwG03U&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+">findJob（二）：操作系统</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/findjobshu-ju-ku-fu-xi/"" data-c="
+          &lt;p&gt;&lt;strong&gt;findJob系列&lt;/strong&gt;，我会把自己的复习的知识点都写出来，今天先是数据库的，督促自己看完。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h1 id=&#34;mysql&#34;&gt;MySQL&lt;/h1&gt;
+&lt;h2 id=&#34;mysql数据类型&#34;&gt;MySQL数据类型&lt;/h2&gt;
+&lt;h3 id=&#34;数值型&#34;&gt;数值型&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;INTEGER、SMALLINT、DECIMAL和NUMERIC&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TINYINT、MEDIUMINT和BIGINT&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;浮点型&#34;&gt;浮点型&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;FLOAT、DOUBLE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;日期时间&#34;&gt;日期/时间&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;DATETIME、DATE、TIMESTAMP、TIME和YEAR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当字段定义为timestamp，表示该字段在插入和更新时都不会自动设置为当前时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;字符串字符&#34;&gt;字符串（字符）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;CHAR：定长字符串&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;VARCHAR：变长字符串&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四种事物隔离级别-httpsdeveloperaliyuncomarticle743691&#34;&gt;四种事物隔离级别 &lt;a href=&#34;https://developer.aliyun.com/article/743691&#34;&gt;https://developer.aliyun.com/article/743691&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;事物并发可能出现的情况&#34;&gt;事物并发可能出现的情况&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;脏读：一个事物读到了另一个未提交事物修改过的数据，只在读未提交隔离级别才会出现&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不可重复读：一个事务只能读到另一个已经提交的事务修改过的数据，并且其他事务每对该数据进行一次修改并提交后，该事务都能查询得到最新值。（不可重复读在读未提交和读已提交隔离级别都可能会出现）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;幻读：一个事务先根据某些条件查询出一些记录，之后另一个事务又向表中插入了符合这些条件的记录，原先的事务再次按照该条件查询时，能把另一个事务插入的记录也读出来。（幻读在读未提交、读已提交、可重复读隔离级别都可能会出现）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;隔离级别比较可串行化可重复读读已提交读未提交&#34;&gt;隔离级别比较：可串行化&amp;gt;可重复读&amp;gt;读已提交&amp;gt;读未提交&lt;/h3&gt;
+&lt;h3 id=&#34;隔离级别对性能的影响比较可串行化可重复读读已提交读未提交&#34;&gt;隔离级别对性能的影响比较：可串行化&amp;gt;可重复读&amp;gt;读已提交&amp;gt;读未提交&lt;/h3&gt;
+&lt;h2 id=&#34;读未提交&#34;&gt;读未提交&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;事务A可以读取到事务B修改过但未提交的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可能发生脏读、不可重复读和幻读问题，一般很少使用此隔离级别。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;读已提交&#34;&gt;读已提交&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;事务B只能在事务A修改过并且已提交后才能读取到事务B修改的数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解决了脏读的问题，但可能发生不可重复读和幻读问题，一般很少使用此隔离级别。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;可重复读默认&#34;&gt;可重复读（默认）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;事务B只能在事务A修改过数据并提交后，自己也提交事务后，才能读取到事务B修改的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解决了脏读和不可重复读的问题，但可能发生幻读&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;可串行化&#34;&gt;可串行化&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;各种问题（脏读、不可重复读、幻读）都不会发生，通过加锁实现（读锁和写锁）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现原理：每条记录在更新的时候都会同时记录一条回滚操作（回滚操作日志undo log）。同一条记录在系统中可以存在多个版本，这就是数据库的多版本并发控制（MVCC）。即通过回滚（rollback操作），可以回到前一个状态的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;mysql索引&#34;&gt;MySql索引&lt;/h1&gt;
+&lt;h2 id=&#34;b和b树的区别&#34;&gt;b和b+树的区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;为什么使用b&#34;&gt;为什么使用b+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;hash：虽然可以快速定位，但是没有顺序，IO复杂度高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;二叉树：树的高度不均匀，不能自平衡，查找效率跟数据有关（树的高度），并且IO代价高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;红黑树：树的高度随着数据量增加而增加，IO代价高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;覆盖索引-联合索引&#34;&gt;覆盖索引、联合索引&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;覆盖索引：指一个查询语句的执行只用从索引中就能够取得，不必从数据表中读取。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;联合索引：下面最左匹配&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;聚簇索引和非聚簇索引&#34;&gt;聚簇索引和非聚簇索引&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在 InnoDB 里，索引B+ Tree的叶子节点存储了整行数据的是主键索引，也被称之为聚簇索引。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;索引B+ Tree的叶子节点存储了主键的值的是非主键索引，也被称之为非聚簇索引。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;聚簇索引查询更快，不需要回表&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;最左匹配&#34;&gt;最左匹配&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;在创建多列索引时，我们根据业务需求，where子句中使用最频繁的一列放在最左边，因为MySQL索引查询会遵循最左前缀匹配的原则，即最左优先，在检索数据时从联合索引的最左边开始匹配。所以当我们创建一个联合索引的时候，如(key1,key2,key3)，相当于创建了(key1)、(key1,key2)和(key1,key2,key3)三个索引，这就是最左匹配原则。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;innodb和myisam的区别&#34;&gt;InnoDB和MyISAM的区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Innodb 支持事务处理与外键和行级锁，myISAM不支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;主从复制&#34;&gt;主从复制&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;过程&lt;img src=&#34;https://cdn.jsdelivr.net/gh/aidancy/FigureBed@master/img/at9g2W.png&#34; alt=&#34;at9g2W&#34; loading=&#34;lazy&#34;&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五种io模型&#34;&gt;五种io模型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/ZWE7616175/article/details/80591587&#34;&gt;https://blog.csdn.net/ZWE7616175/article/details/80591587&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;同步io&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;阻塞IO、非阻塞IO、信号驱动IO、IO多路转接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;异步IO&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻塞程度：阻塞IO&amp;gt;非阻塞IO&amp;gt;多路转接IO&amp;gt;信号驱动IO&amp;gt;异步IO&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;redis&#34;&gt;Redis&lt;/h1&gt;
+&lt;h2 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;string、list、hash、set和zset&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;和mysql的区别&#34;&gt;和MySQL的区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Redis：基于内存，读写速度快，也可做持久化，但是内存空间有限，当数据量超过内存空间时，需扩充内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MySQL：基于磁盘，读写速度没有Redis快，但是不受空间容量限制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;也可以去幕布看，比较清晰。&lt;a href=&#34;https://share.mubu.com/doc/74G_Ph8fM_U&#34;&gt;https://share.mubu.com/doc/74G_Ph8fM_U&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+">findJob（一）：数据库复习</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/linux-q&amp;a/"" data-c="
+          &lt;p&gt;在Linux上开发需要经常查看的命令&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;查看网络信息&#34;&gt;查看网络信息&lt;/h2&gt;
+&lt;h3 id=&#34;netstat&#34;&gt;netstat&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;netstat -an | grep 8080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看&lt;code&gt;8080&lt;/code&gt;端口信息&lt;/p&gt;
+&lt;h3 id=&#34;lsof&#34;&gt;lsof&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;lsof -i:80
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;-i&lt;/code&gt;参数表示网络链接，&lt;code&gt;:80&lt;/code&gt;指明端口号，该命令会同时列出PID，方便kill&lt;/p&gt;
+&lt;h3 id=&#34;ifconfig&#34;&gt;ifconfig&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ifconfig -a
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看网卡信息&lt;br&gt;
+类似：&lt;code&gt;lspci | grep -i &#39;eth&#39;&lt;/code&gt;, &lt;code&gt;ip add&lt;/code&gt;, &lt;code&gt;ip link show&lt;/code&gt;, &lt;code&gt;ethtool eth0&lt;/code&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;查看硬件信息&#34;&gt;查看硬件信息&lt;/h2&gt;
+&lt;h3 id=&#34;lscpu&#34;&gt;lscpu&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;lscpu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看cpu信息&lt;br&gt;
+类似：&lt;code&gt;cat /proc/cpuinfo&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;free&#34;&gt;free&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;free
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看内存信息&lt;br&gt;
+&lt;code&gt;free -m&lt;/code&gt; =&amp;gt; &lt;code&gt;cat /proc/meminfo&lt;/code&gt;&lt;br&gt;
+&lt;code&gt;free -h&lt;/code&gt; =&amp;gt; &lt;code&gt;dmidecode -t memory&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;lsblk&#34;&gt;lsblk&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;lsblk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看磁盘信息&lt;br&gt;
+类似：&lt;code&gt;fdisk -l&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;lspci&#34;&gt;lspci&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;lspci
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看硬件信息&lt;br&gt;
+&lt;code&gt;-t&lt;/code&gt;, &lt;code&gt;-v&lt;/code&gt;, &lt;code&gt;-vv&lt;/code&gt;&lt;br&gt;
+类似：&lt;code&gt;dmidecode -q&lt;/code&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;kill-9-发生了什么&#34;&gt;&lt;code&gt;kill -9&lt;/code&gt; 发生了什么&lt;/h3&gt;
+&lt;p&gt;kill 默认信号是 -15，&lt;code&gt;kill -15&lt;/code&gt;代表的信号为&lt;code&gt;SIGTERM&lt;/code&gt;，这是告诉进程你需要被关闭，请自行停止运行并退出；&lt;br&gt;
+&lt;code&gt;kill -9&lt;/code&gt; 代表的信号是&lt;code&gt;SIGKILL&lt;/code&gt;，表示进程被终止，需要立即退出；&lt;/p&gt;
+&lt;h3 id=&#34;终端结束信号&#34;&gt;终端结束信号&lt;/h3&gt;
+&lt;p&gt;开启终端后，shell会给 &lt;code&gt;SIGHUP&lt;/code&gt; 信号注册一个回调函数，用于给该 shell 下所有的子进程发送 &lt;code&gt;SIGHUP&lt;/code&gt; 信号，然后再主动退出。&lt;/p&gt;
+&lt;h3 id=&#34;按下ctrl-c-发生了什么&#34;&gt;按下ctrl-c 发生了什么&lt;/h3&gt;
+&lt;p&gt;终端产生 &lt;code&gt;SIGINT&lt;/code&gt; 信号&lt;br&gt;
+前台进程组中的所有进程都会接收到 SIGINT 信号然后退出(默认动作)&lt;br&gt;
+shell通过调用 waitpid 清理进程表中子进程信息&lt;/p&gt;
+&lt;h3 id=&#34;查看进程打开的文件&#34;&gt;查看进程打开的文件&lt;/h3&gt;
+&lt;p&gt;lsof：打开进程打开的所有文件&lt;br&gt;
+lsof /目录 /文件：查看谁正在使用该文件&lt;br&gt;
+lsof +D /目录/：查看某个目录的所有文件信息的方法&lt;br&gt;
+lsof -u username：列出某个用户打开的文件信息&lt;br&gt;
+losf -c mysql：列出某个程序打开的文件信息&lt;br&gt;
+lsof -u^root: 列出除了某个用户外的被打开的文件信息&lt;br&gt;
+losf -p 123,456,789：通过进程号查看打开的文件&lt;br&gt;
+lsof -p ^1：排除某个进程号所打开的文件&lt;br&gt;
+lsof -i [udp] [tcp] ：查看网络连接信息&lt;br&gt;
+lsof -i:3306 : 列出谁在使用某个端口&lt;/p&gt;
+&lt;h3 id=&#34;查看内存-cup-端口&#34;&gt;查看内存、cup、端口&lt;/h3&gt;
+&lt;p&gt;查看内存：cat /proc/meminfo | grep MemTotal&lt;br&gt;
+查看cpu：cat /proc/cpuinfo&lt;br&gt;
+netstat -lntp # 查看所有监听端口&lt;/p&gt;
+">Linux问题记录</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/xin-xi-shang/"" data-c="
+          &lt;p&gt;熵，一个标记系统混乱程度的概念。有点意思&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;熵&#34;&gt;熵&lt;/h2&gt;
+&lt;p&gt;熵（entropy），是化学和热力学中的一个概念，但现在可以被广泛的应用于各种领域中来描述一个系统的混乱程度。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;是一种测量在&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%8B%95%E5%8A%9B%E5%AD%B8&#34;&gt;动力学&lt;/a&gt;方面不能做&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%8A%9F&#34;&gt;功&lt;/a&gt;的&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E8%83%BD%E9%87%8F&#34;&gt;能量&lt;/a&gt;总数，也就是当总体的熵增加，其做功能力也下降，熵的量度正是能量退化的指标。熵亦被用于计算一个系统中的失序现象，也就是计算该系统混乱的程度。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;信息量&#34;&gt;信息量&lt;/h2&gt;
+&lt;p&gt;信息量用来衡量信息的多少，而且接收到的信息量和具体发生的事件有关。信息量的大小和随机事件的发生概率有关。发生越小概率的事件的发生产生的信息量越大，比如地震；越大概率的事件发生产生的信息量越小，比如太阳从东边升起。&lt;/p&gt;
+&lt;p&gt;所以一个具体的事件的信息量应该是随着其发生概率而递减，且不为负。&lt;/p&gt;
+&lt;p&gt;那么，如果我们有俩个不相关的事件x和y，那么我们观察到的俩个事件同时发生时获得的信息应该等于观察到的事件各自发生时获得的信息之和，即：&lt;/p&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo separator=&#34;true&#34;&gt;,&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;h(x,y)=h(x)+h(y)
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mpunct&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;由于x, y是两个不相关的事件，那么其发生概率满足：&lt;/p&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo separator=&#34;true&#34;&gt;,&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;⋅&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;P(x,y) = P(x) \cdot P(y)
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mpunct&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;⋅&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;由上面两个公式可以得出h(x),P(x)是对数关系&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;只有对数形式的真数相乘之后可以对应对数相加的形式，&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msub&gt;&lt;mi&gt;log&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;log&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;/msub&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;msub&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;/msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\log_a (mn)=\log_a m + log_a n&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;&lt;span class=&#34;mop&#34;&gt;lo&lt;span style=&#34;margin-right:0.01389em;&#34;&gt;g&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.057252em;&#34;&gt;&lt;span style=&#34;top:-2.4558600000000004em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;a&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24414em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.93858em;vertical-align:-0.24414em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;&lt;span class=&#34;mop&#34;&gt;lo&lt;span style=&#34;margin-right:0.01389em;&#34;&gt;g&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.057252em;&#34;&gt;&lt;span style=&#34;top:-2.4558600000000004em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;a&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24414em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.8888799999999999em;vertical-align:-0.19444em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.03588em;&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.151392em;&#34;&gt;&lt;span style=&#34;top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;a&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.15em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;n&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;log&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;/msub&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;h(x)= -\log_b P(x)
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;&lt;span class=&#34;mop&#34;&gt;lo&lt;span style=&#34;margin-right:0.01389em;&#34;&gt;g&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24196799999999993em;&#34;&gt;&lt;span style=&#34;top:-2.4558600000000004em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;b&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24414em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;那么概率和信息量的关系为：&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1-3.png&#34; alt=&#34;信息量-概率&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;信息熵&#34;&gt;信息熵&lt;/h2&gt;
+&lt;p&gt;1948年，香农提出“信息熵”的概念，解决了对信息量化度量的问题，因此也被称之为香农熵。&lt;/p&gt;
+&lt;p&gt;信息量度量的是一个具体事件发生了所带来的信息，而熵则是在结果出来之前对可能产生的信息量的期望，考虑该随机变量的所有可能取值，即所有可能发生事件所带来的信息量的期望。&lt;/p&gt;
+&lt;p&gt;即：&lt;/p&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;H&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;log&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;/msub&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\Eta(X)= - \sum(P(x)\log_b P(x))
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathrm&#34;&gt;H&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1.6000100000000002em;vertical-align:-0.55001em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop op-symbol large-op&#34; style=&#34;position:relative;top:-0.000004999999999977245em;&#34;&gt;∑&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;&lt;span class=&#34;mop&#34;&gt;lo&lt;span style=&#34;margin-right:0.01389em;&#34;&gt;g&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24196799999999993em;&#34;&gt;&lt;span style=&#34;top:-2.4558600000000004em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;b&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24414em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;一条信息的信息量大小和它不确定性有直接关系。比如说，我们要搞清楚一件非常非常不确定的事，或是我们一无所知的事情，就需要了解大量的信息。相反，如果我们对某件事已经有了较多的了解，我们不需要太多的信息就能把它搞清楚。&lt;/p&gt;
+&lt;p&gt;随机变量&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;X&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.68333em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 的熵值 &lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;H&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\Eta&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.68333em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathrm&#34;&gt;H&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 定义如下，值域为&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mo&gt;{&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;mo separator=&#34;true&#34;&gt;,&lt;/mo&gt;&lt;mo&gt;…&lt;/mo&gt;&lt;mo separator=&#34;true&#34;&gt;,&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;}&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\{x_1,…, x_n\}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.30110799999999993em;&#34;&gt;&lt;span style=&#34;top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mtight&#34;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.15em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mpunct&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;minner&#34;&gt;…&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mpunct&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.151392em;&#34;&gt;&lt;span style=&#34;top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;n&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.15em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;则&lt;/p&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;H&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;[&lt;/mo&gt;&lt;mi&gt;I&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;]&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;[&lt;/mo&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mi&gt;ln&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;]&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\Eta(X)= E[I(X)] = E[-\ln(P(X))]
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathrm&#34;&gt;H&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.05764em;&#34;&gt;E&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.05764em;&#34;&gt;E&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;ln&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;P为&lt;em&gt;X&lt;/em&gt;的概率质量函数（probability mass function），E为期望，而I(&lt;em&gt;X&lt;/em&gt;)是&lt;em&gt;X&lt;/em&gt;的信息量。I(&lt;em&gt;X&lt;/em&gt;)本身是个随机变数。&lt;/p&gt;
+&lt;p&gt;当取自有限样本时，熵的公示即可表示为：&lt;/p&gt;
+&lt;p class=&#39;katex-block&#39;&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;H&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;munderover&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/munderover&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;log&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;[&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;]&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\Eta(X)=-\sum_{i=1}^n P(x_i)\log_b [P(x_i)]
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathrm&#34;&gt;H&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.07847em;&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:2.929066em;vertical-align:-1.277669em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop op-limits&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:1.6513970000000002em;&#34;&gt;&lt;span style=&#34;top:-1.872331em;margin-left:0em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3.05em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;mrel mtight&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mord mtight&#34;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;top:-3.050005em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3.05em;&#34;&gt;&lt;/span&gt;&lt;span&gt;&lt;span class=&#34;mop op-symbol large-op&#34;&gt;∑&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;top:-4.3000050000000005em;margin-left:0em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3.05em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;n&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:1.277669em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.31166399999999994em;&#34;&gt;&lt;span style=&#34;top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.15em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.16666666666666666em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mop&#34;&gt;&lt;span class=&#34;mop&#34;&gt;lo&lt;span style=&#34;margin-right:0.01389em;&#34;&gt;g&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24196799999999993em;&#34;&gt;&lt;span style=&#34;top:-2.4558600000000004em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;b&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.24414em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;msupsub&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.31166399999999994em;&#34;&gt;&lt;span style=&#34;top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:2.7em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;sizing reset-size6 size3 mtight&#34;&gt;&lt;span class=&#34;mord mathdefault mtight&#34;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.15em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这里b通常是2、自然常数e、或是10。当&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;b=2&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.69444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.64444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; ，熵的单位是bit；当&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;b=e&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.69444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.43056em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;e&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;，处理正态分布的数据；当&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;10&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;b=10&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.69444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.64444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;,万金油。&lt;/p&gt;
+&lt;h2 id=&#34;信息量和信息熵的使用&#34;&gt;信息量和信息熵的使用&lt;/h2&gt;
+&lt;p&gt;有上面的公式可以看出，信息越不确定，信息熵就会越高。当信息确定，如太阳明天早晨从东边升起概率是1，&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;h(x)&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 为0，可得&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;H&lt;/mi&gt;&lt;mo&gt;(&lt;/mo&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mo&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;\Eta(s)=0&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathrm&#34;&gt;H&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathdefault&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2777777777777778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.64444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; ，反之信息熵就会越来越高。&lt;/p&gt;
+&lt;p&gt;当一个人需要了解一个信息的时候，需要从众多的信息中得到这个信息的最终确定值，也就是一个逐步进行熵减的过程，最终到确定了解这个个信息也就是熵减少到0。&lt;/p&gt;
+&lt;p&gt;熵增定律说明：事物总是向着无序混乱状态发展。&lt;/p&gt;
+&lt;p&gt;那我想要获得一个熵足够低的信息，我就要进行熵减的行为，也就是需要向系统中输入能量，使系统的混乱程度降度。&lt;/p&gt;
+&lt;p&gt;在我们一生的学习中，我们都在不断的用大脑来试错，减少错误信息的干扰，直到能拿到一个熵为0的信息，结果就是我们学会知识。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[1]. 熵 (信息论)[J]. 维基百科，自由的百科全书, 2020. https://zh.wikipedia.org/wiki/%E7%86%B5_(%E4%BF%A1%E6%81%AF%E8%AE%BA).&lt;/p&gt;
+&lt;p&gt;[2]. 信息量_百度百科[EB/OL]. [2020-04-18]. https://baike.baidu.com/item/%E4%BF%A1%E6%81%AF%E9%87%8F/420401.&lt;/p&gt;
+&lt;p&gt;[3]. 信息熵[EB/OL]. 机器之心, [2020-04-18]. https://www.jiqizhixin.com/graph/technologies/7afc5fc3-a61c-4238-b496-9c39392a91fe.&lt;/p&gt;
+&lt;p&gt;[4]. 香农熵_百度百科[EB/OL]. [2020-04-18]. https://baike.baidu.com/item/%E9%A6%99%E5%86%9C%E7%86%B5.&lt;/p&gt;
+&lt;/blockquote&gt;
+">信息熵</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/vim-ming-ling-ji-lu/"" data-c="
+          &lt;p&gt;vim是Linux下好用的编辑器，但是也需要熟悉使用命令才能 &lt;s&gt;更好装x&lt;/s&gt; 提高效率&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;vim分成3种模式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;正常模式（Normal）：启动后进入模式，按&lt;code&gt;:&lt;/code&gt;输入命令&lt;/li&gt;
+&lt;li&gt;插入模式（Insert）：按&lt;code&gt;i&lt;/code&gt;进入，&lt;code&gt;ESC&lt;/code&gt;退回到Normal&lt;/li&gt;
+&lt;li&gt;可视模式（Visual）：按&lt;code&gt;v&lt;/code&gt;,&lt;code&gt;V&lt;/code&gt;进入可视模式，类似鼠标操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;基本操作&#34;&gt;基本操作&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;i&lt;/code&gt;：进入Insert模式可以正常编辑文本&lt;br&gt;
+&lt;code&gt;x&lt;/code&gt;：删除当前光标所在的字符&lt;br&gt;
+&lt;code&gt;:wq&lt;/code&gt;：保存并推出 （&lt;code&gt;:w&lt;/code&gt;保存，后面可加文件名，&lt;code&gt;:q&lt;/code&gt;退出）&lt;br&gt;
+&lt;code&gt;dd&lt;/code&gt;：剪切当前行&lt;br&gt;
+&lt;code&gt;p&lt;/code&gt;：粘贴&lt;/p&gt;
+&lt;h2 id=&#34;插入&#34;&gt;插入&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;a&lt;/code&gt;：小写a，在光标后插入&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;o&lt;/code&gt;：小写o，在当前行后插入新行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;O&lt;/code&gt;：大写O，在当前行前插入新行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cw&lt;/code&gt;：替换从当前光标所在位置到最后一个字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;移动光标&#34;&gt;移动光标&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0&lt;/code&gt;：数字0，光标移动到行首&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt;：上尖角，光标移动到本行第一个不是空的位置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$&lt;/code&gt;：光标移动到行尾&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;g_&lt;/code&gt;光标移动到本行最后一个不是空的位置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/apple&lt;/code&gt;：搜索&lt;code&gt;apple&lt;/code&gt;字符串（若有多个结果，&lt;code&gt;n&lt;/code&gt;跳到下一个）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;复制粘贴&#34;&gt;复制/粘贴&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;p&lt;/code&gt;,&lt;code&gt;P&lt;/code&gt;：粘贴，小写是在光标位置之后，大写在光标位置之前&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yy&lt;/code&gt;：复制当前行，相当于&lt;code&gt;ddP&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;撤销前进&#34;&gt;撤销/前进&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;u&lt;/code&gt;：撤销&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ctrl&lt;/code&gt;+&lt;code&gt;r&lt;/code&gt;：前进&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;文件操作&#34;&gt;文件操作&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;:e &amp;lt;path/to/file&amp;gt;&lt;/code&gt;：打卡设定目录文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:w&lt;/code&gt;：保存当前文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:saveas &amp;lt;path/to/file&amp;gt;&lt;/code&gt;：当前文件另存为到&lt;code&gt;&amp;lt;path/to/file&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ZZ&lt;/code&gt;或&lt;code&gt;:wq&lt;/code&gt;：保存并退出&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:q!&lt;/code&gt;：强制退出不保存&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:qa!&lt;/code&gt;：强制退出全部正在编辑的文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:bn&lt;/code&gt;,&lt;code&gt;:bp&lt;/code&gt;：同时打开多个文件时切换下一个或上一个&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:n&lt;/code&gt;：到下个文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;其他操作&#34;&gt;其他操作&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;.&lt;/code&gt;：小数点，代表上一条命令&lt;br&gt;
+&lt;code&gt;N&lt;/code&gt;+&lt;code&gt;command&lt;/code&gt;：数字+命令 表示重复某个命令N次，使用上面的小数点，eg&lt;code&gt;3.&lt;/code&gt;：表示重复条命令3次，&lt;code&gt;3dd&lt;/code&gt;：表示删除3行&lt;/p&gt;
+&lt;h1 id=&#34;分屏-split-和-vsplit&#34;&gt;分屏 &lt;code&gt;:split&lt;/code&gt; 和 &lt;code&gt;:vsplit&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;:split&lt;/code&gt;：创建分屏&lt;br&gt;
+&lt;code&gt;:vsplit&lt;/code&gt;：创建垂直分屏&lt;br&gt;
+ctrl+&lt;code&gt;w&lt;/code&gt;+方向：根据方向分屏&lt;br&gt;
+ctrl+&lt;code&gt;w&lt;/code&gt;+&lt;code&gt;_&lt;/code&gt;：最大化&lt;br&gt;
+ctrl+&lt;code&gt;w&lt;/code&gt;+&lt;code&gt;+&lt;/code&gt;：增加尺寸&lt;/p&gt;
+">Vim命令记录</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/swiftui-@state/"" data-c="
+          &lt;p&gt;在我现在接触到的 SwiftUI 开发中需要更改，保存页面的值的时候，比如按一个按钮就能增加一个值，当退出的时候这个值如何才能保存起来，在下次打开的时候还能使用就要用到 @State 这个属性装饰器。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h1 id=&#34;那状态怎么改变&#34;&gt;那状态怎么改变？&lt;/h1&gt;
+&lt;p&gt;比如写个按钮&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct ContentView: View {
+    var count = 0
+    var body: some View {
+        Button(&amp;quot;count: \(count)&amp;quot;) {
+            self.count += 1
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;当点击按钮的时候count加1。但是这个其实是会报错的 struct 是不可变的&lt;/p&gt;
+&lt;p&gt;这怎么办呢？&lt;br&gt;
+就可以用到@State&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct ContentView: View {
+    @State var count = 0
+    var body: some View {
+        Button(&amp;quot;count: \(count)&amp;quot;) {
+            self.count += 1
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;@State使得超出struct本身的限制，动态修改属性的值。这样就能在程序发生变化的时候，更新界面了。&lt;/p&gt;
+&lt;h1 id=&#34;双向绑定&#34;&gt;双向绑定&lt;/h1&gt;
+&lt;p&gt;还有个问题就是如果输入框的输入内容改变了，存储输入内容的属性应该如何更新？&lt;br&gt;
+这就需要讲到双向绑定了。当页面的UI发生变化的时候，对应的属性也能随之改变，真正做到页面时状态的函数。&lt;br&gt;
+在 SwiftUI 中使用 &lt;code&gt;$&lt;/code&gt;来表示，在属性前面加上&lt;code&gt;$&lt;/code&gt;就意味着读取属性的同时只要值改变也会更新属性的值&lt;br&gt;
+举个🍍：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct ContentView: View {
+    @State private var name = &amp;quot;&amp;quot;
+    var body: some View {
+        Form {
+            TextField(&amp;quot;Your name&amp;quot;, text: $name)
+            Text(&amp;quot;Hello \(name)&amp;quot;)
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;当你输入值的时候name也会随之变化&lt;br&gt;
+还可以给绑定属性添加动画包装，这样在属性值发生变化时页面的变动会有动画效果，比如下面的🍎，开关打开时，TextField会更平滑的出现：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;Toggle(isOn: $addLoyaltyDetails.animation()) {
+    Text(&amp;quot;Add iDine loyalty card&amp;quot;)
+}
+if addLoyaltyDetails {
+    TextField(&amp;quot;Enter your iDine ID&amp;quot;, text: $loyaltyNumber)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;自定义双向绑定&#34;&gt;自定义双向绑定&lt;/h1&gt;
+&lt;p&gt;举个🥭自定义get set&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct ContentView: View {
+    @State private var username = &amp;quot;&amp;quot;
+    var body: some View {
+        let binding = Binding(
+            get: { self.username },
+            set: { self.username = $0 }
+        )
+        return VStack {
+            TextField(&amp;quot;Enter your name&amp;quot;, text: binding)
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;好处就是可以在自定义绑定的set和get中添加自己的逻辑，比如对数据的处理，或者先进行额外的操作，再进行set和get&lt;/p&gt;
+">SwiftUI: @State 一个用来修改页面状态的神奇语句</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/lesslessseekan-jian-greatergreater/"" data-c="
+          &lt;p&gt;花了一段零散的时间看完了Apple出得新剧see，还有一部《为了全人类》还没看，这个题材不知道啥时候有时间看了，扯远了。这部剧怎么说呢，其实前几集都看的云里雾里的，可能实在交代背景吧，讲的是在未来的世界人类失去了了视力，大家生活在没有vision的世界里。建议1.2倍速观看。&lt;/p&gt;
+&lt;p&gt;海王演的巴巴沃斯真的是太燃了，作为一个部落首领展现了非凡的领导能力，作为父亲也真的是如山的父爱永远都保护着他们的孩子，虽然孩子有时候不懂事，甚至孩子不是他亲生的，但是他依然给了孩子成长的空间，在孩子碰了壁也依然能给孩子们足够的保护。&lt;/p&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/see.png&#34; alt=&#34;see&#34; style=&#34;zoom:40%;&#34; /&gt;">《See:看见》</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/2020/"" data-c="
+          &lt;p&gt;这是一篇旧年总结，但也是为了自己新年快乐，虽然我是想把这个blog当作一个技术博客来着，没想到没写几个就到了新年。总觉着现在过年的意义已经变成了年终和朋友们相聚的日子，只有这时候熟悉的旧友才能见面，1月1号成了每年循环的起止点，更具意义吧。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;过去的2019&#34;&gt;&lt;strong&gt;过去的2019&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;最难忘的就是上一段完整的一段，整整一年365天的恋爱了，结束于9021-8-25，大概是我想投入最多的一次了吧，没想到被现实击败，上半年大部分都是很舒服，感觉很棒&lt;/p&gt;
+&lt;h2 id=&#34;一月&#34;&gt;&lt;strong&gt;一月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;我们一起跨了年；陶瓷项目接近尾声，算是我第一个紧跟着的项目，过年大概是实验室最后走的；师兄帮我们写代码，我们帮师兄翻译论文，连续好几天快到半夜12点回宿舍，但是很开心很满足&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577810404684.jpeg&#34; alt=&#34;1577810404684&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二月&#34;&gt;&lt;strong&gt;二月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;过年，吃吃饭喝喝酒，知道了高中这帮朋友们都各有各的难处，大家都在努力的生活着，也大概除了失恋是我喝的最多的一回了。&lt;/p&gt;
+&lt;h2 id=&#34;三月&#34;&gt;&lt;strong&gt;三月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;没什么事情，每天往返于实验室和宿舍，去了北海公园，那时候还挺瘦的&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860715251.jpeg&#34; alt=&#34;1577860715251&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;四月&#34;&gt;&lt;strong&gt;四月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;月初去了欢乐谷，应该是清明假期吧。挺快乐的，有很多照片，月底有复联四看，接手了固体所AFM的项目虽然都是c#的其实不太想写，但是也没办法&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860761574.jpeg&#34; alt=&#34;1577860761574&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860855464.jpeg&#34; alt=&#34;1577860855464&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;五月&#34;&gt;&lt;strong&gt;五月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;国庆假期参加了同学的婚礼，家人发生了一件大事儿，身体健康至关重要。大概经历了我人生中最难受的时刻，却越发觉得那时候还是挺坚强的，人生就是这样，一定会有事情发生，也一定会解决，也坚定了自己一定要努力做一个处事淡定的人，重看了复联四漫威慢慢被前女友带的越来越招我喜欢&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860880299.jpeg&#34; alt=&#34;1577860880299&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;六月&#34;&gt;&lt;strong&gt;六月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;回家，老爸做手术，守在手术室门口，一整天，我都没有坐下，可能那时候我才真正体会到了心里悬着大石头的感觉吧，老爸手术顺利，陪着他，恢复，感觉还是家人重要&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860929120.jpeg&#34; alt=&#34;1577860929120&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;老爸病房外&lt;/p&gt;
+&lt;h2 id=&#34;七月&#34;&gt;&lt;strong&gt;七月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;出差去贵阳20来天，环境虽然是老师项目里还不错的，但可能是我出公差环境最不好的把，收集需求做一个称职的产品经理&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577860993249.jpeg&#34; alt=&#34;1577860993249&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;八月&#34;&gt;&lt;strong&gt;八月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;月初回家了，回来看看老爸。&lt;/p&gt;
+&lt;p&gt;月中去了天津听了IEEE的学术报告，大概在这个时候，我的感情开始恶化&lt;/p&gt;
+&lt;p&gt;月末，没错我又回家了，为了给她一个惊喜，也确实给她了惊喜，去了方特，但这次没想到是最后一次见了&lt;/p&gt;
+&lt;p&gt;回来之后，我们分手了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861031321.jpeg&#34; alt=&#34;1577861031321&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861041164.jpeg&#34; alt=&#34;1577861041164&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/IMG_9084.jpeg&#34; alt=&#34;IMG_9084&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/IMG_9093.jpeg&#34; alt=&#34;IMG_9093&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/IMG_9272.jpeg&#34; alt=&#34;IMG_9272&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;九月&#34;&gt;&lt;strong&gt;九月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;疗伤，我依然表面开心的生活着和朋友们一起过中秋，去世界公园玩，月底去欢乐谷，都让我很开心&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861371024.jpeg&#34; alt=&#34;1577861371024&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861357587.jpeg&#34; alt=&#34;1577861357587&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/IMG_9410.jpeg&#34; alt=&#34;IMG_9410&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;十月&#34;&gt;&lt;strong&gt;十月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;祖国妈妈生日，跑去看烟花，真的开心；开始参加MES的项目，写一个以前从来没写过的代码Java项目；月底姐姐结婚，我又回来了，收到好多红包，依然开心&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;4&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861458448.png&#34; alt=&#34;1577861458448&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;十一月&#34;&gt;&lt;strong&gt;十一月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;月初陪老师的菲律宾团队逛故宫，看杂技，虽然其他时间都一直在打代码，但是依然开心；新增硬件Apple Watch&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861517412.jpeg&#34; alt=&#34;1577861517412&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;十二月&#34;&gt;&lt;strong&gt;十二月&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;北京下雪了，我们项目结束，全实验室人一起去了哈尔滨，依然开心，准备开题，为自己的论文作准备；直到现在过几天就要答辩了&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;6&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1577861622308.jpeg&#34; alt=&#34;1577861622308&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;感觉到今年可能会更加不平常，去年可以说技能没有什么实质性的进展，但是技能点也多加了几个，java，sql虽然都是在做好的框架下，希望新年能够学到更多，自己也更能有自制力，学到更多。&lt;br&gt;
+拜拜2019～&lt;br&gt;
+你好2020🍺&lt;/p&gt;
+">2020新年快乐～</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/yi-xie-docker-de-shi-yong-ji-lu/"" data-c="
+          &lt;p&gt;打算大范围使用docker来搭建环境&lt;br&gt;
+有关Docker的内容命令太多以防忘记&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;--2019-12-31更新--&lt;br&gt;
+年末更新：&lt;br&gt;
+发现在deepin上安装的docker运行需要连接网络的应用程序会遇到&lt;code&gt;sock：Permission denide&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;原因是：&lt;br&gt;
+&lt;code&gt;apparmor&lt;/code&gt;这个系统安全组件阻止了&lt;br&gt;
+可以通过&lt;code&gt;dmesg | tail&lt;/code&gt;来查看，会出现&lt;code&gt;apparmor=&amp;quot;DENIED&amp;quot;&lt;/code&gt;&lt;br&gt;
+发现github上有相应的issue，解决方法我认为最好的是在run container的时候添加选项不使用apparmor&lt;br&gt;
+&lt;code&gt;--security-opt apparmor=unconfined&lt;/code&gt;&lt;br&gt;
+但可能最新版本的deepin已经取消使用这个组件，等开学来了给实验室电脑重新安装一下试试&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;参考：https://github.com/docker/for-linux/issues/413&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;举个🍍：&lt;br&gt;
+&lt;code&gt;docker run -d -p 8000:8000 -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data --name portainer --security-opt apparmor=unconfined portainer/portainer&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;使用ip+9000，又可以愉快的使用portainer了。&lt;/p&gt;
+&lt;h1 id=&#34;临时设置源&#34;&gt;临时设置源&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;docker run hello-world --registry-mirror=https://docker.mirrors.ustc.edu.cn &lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&#34;命令&#34;&gt;命令：&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;docker image ls&lt;/code&gt; #列出本地镜像&lt;br&gt;
+&lt;code&gt;docker system df&lt;/code&gt; #查看镜像、容器、数据卷所占用的空间&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker run -it --[name] ubuntu /bin/bash&lt;/code&gt; #创建并启动一个容器&lt;br&gt;
+-i让容器的标准输入保持打开&lt;br&gt;
+-t分配一个伪终端&lt;br&gt;
+-d后台运行参数&lt;br&gt;
+--[name]命名&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker rename [CONTAINER_ID OR NAME]&lt;/code&gt; 新容器名称&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker container start&lt;/code&gt; #启动终止态的容器&lt;br&gt;
+&lt;code&gt;docker container stop&lt;/code&gt; #停止启动态的容器&lt;br&gt;
+&lt;code&gt;docker container restart&lt;/code&gt; #重启容器&lt;br&gt;
+&lt;code&gt;docker stop $(docker container ls -q)&lt;/code&gt; #停止所有容器&lt;/p&gt;
+&lt;h1 id=&#34;保存当前container&#34;&gt;保存当前container&lt;/h1&gt;
+&lt;p&gt;导出快照：&lt;br&gt;
+&lt;code&gt;docker export [CONTAINER_ID OR NAME]&amp;gt; ubuntu.tar&lt;/code&gt;&lt;br&gt;
+导入快照：&lt;br&gt;
+&lt;code&gt;cat ubuntu.tar | docker import - PATH/ubuntu&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;删除容器：&lt;br&gt;
+&lt;code&gt;docker container rm [CONTAINER_ID OR NAME]&lt;/code&gt; #删除一个处于终止状态的容器&lt;br&gt;
+&lt;code&gt;docker container prune&lt;/code&gt; #清除全部终止容器&lt;/p&gt;
+&lt;h1 id=&#34;terminal后台控制&#34;&gt;terminal后台控制&lt;/h1&gt;
+&lt;p&gt;进入后台容器：&lt;br&gt;
+&lt;code&gt;docker container ls -a&lt;/code&gt; #显示现有容器&lt;br&gt;
+&lt;code&gt;docker exec -it [CONTAINER_ID OR NAME] zsh&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;control + d #终止容器&lt;br&gt;
+control + p/q #退出容器而不终止&lt;br&gt;
+control + c #停止内部程序&lt;/p&gt;
+&lt;h1 id=&#34;提交docker镜像&#34;&gt;提交Docker镜像&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]&lt;/code&gt;&lt;br&gt;
+OPTIONS说明：&lt;br&gt;
+-a :提交的镜像作者；&lt;br&gt;
+-c :使用Dockerfile指令来创建镜像；&lt;br&gt;
+-m :提交时的说明文字；&lt;br&gt;
+-p :在commit时，将容器暂停&lt;/p&gt;
+&lt;p&gt;列出后台任务&lt;br&gt;
+&lt;code&gt;jobs -l&lt;/code&gt;&lt;br&gt;
+&lt;code&gt;kill +9 -id&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&#34;修改container端口&#34;&gt;修改container端口&lt;/h1&gt;
+&lt;p&gt;重新设定docker映射：&lt;br&gt;
+0）  &lt;code&gt;docker container list –all&lt;/code&gt;&lt;br&gt;
+结果中的CONTAINER ID列为容器id&lt;br&gt;
+1）  &lt;code&gt;docker inspect &amp;lt;容器id&amp;gt;   |  grep Id&lt;/code&gt;&lt;br&gt;
+查看容器hash，&amp;lt;容器id&amp;gt;由步骤0）获得&lt;br&gt;
+2）  &lt;code&gt;docker stop &amp;lt;容器id&amp;gt;&lt;/code&gt;&lt;br&gt;
+停止运行中的容器&lt;br&gt;
+3）  &lt;code&gt;vim /var/lib/docker/containers/[容器hash]/hostconfig.json&lt;/code&gt;&lt;br&gt;
+编辑容器配置文件，&amp;lt;容器hash&amp;gt;由步骤1）获得&lt;br&gt;
+修改PortBindings参数配置，宿主机8001端口映射容器80端口示例：&lt;br&gt;
+“PortBindings”:{“80/tcp”:[{“HostIp”:””,”HostPort”:”8001″}]},”&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;systemctl restart docker&lt;/code&gt;&lt;br&gt;
+重新启动docker引擎&lt;br&gt;
+5）&lt;code&gt;docker start &amp;lt;容器id&amp;gt;&lt;/code&gt;&lt;br&gt;
+重新启动docker容器&lt;/li&gt;
+&lt;/ol&gt;
+">📒：一些Docker的使用记录</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/defer-and-interface/"" data-c="
+          &lt;p&gt;&lt;strong&gt;有关defer &amp;amp; interface用法：defer用于资源的释放，会在函数返回之前进行调用。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;紧记defer是用在函数返回前调用，defer是在return之前执行的。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;执行顺序为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先给返回值赋值&lt;/li&gt;
+&lt;li&gt;然后执行defer语句&lt;/li&gt;
+&lt;li&gt;之后返回返回值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;defer语句执行顺序类似于栈，后进先出原则。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;interface 接口&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;实际上就是一个结构体，包含两个成员。其中一个成员是指向具体数据的指针，另一个成员中包含了类型信息。空接口和带方法的接口略有不同，下面分别是空接口和带方法的接口是使用的数据结构：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;struct Eface
+{
+    Type*    type;
+    void*    data;
+};
+struct Iface
+{
+    Itab*    tab;
+    void*    data;
+};
+&lt;/code&gt;&lt;/pre&gt;
+">go:defer & interface</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/netatalk-v3-an-zhuang-deepin/"" data-c="
+          &lt;p&gt;直接用apt安装安装的是netatalk v2版本&lt;br&gt;
+所以使用官网安装方法安装v3版本&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;所以使用官网安装方法&lt;br&gt;
+http://netatalk.sourceforge.net/wiki/index.php/Install_Netatalk_3.1.12_on_Debian_9_Stretch&lt;/p&gt;
+&lt;p&gt;居然不提供依赖包的命令行&lt;/p&gt;
+&lt;h1 id=&#34;1依赖包&#34;&gt;1.依赖包：&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt install build-essential libevent-dev libssl-dev libgcrypt-dev libkrb5-dev libpam0g-dev libwrap0-dev libdb-dev libtdb-dev libmariadbclient-dev avahi-daemon libavahi-client-dev libacl1-dev libldap2-dev libcrack2-dev systemtap-sdt-dev libdbus-1-dev libdbus-glib-1-dev libglib2.0-dev libio-socket-inet6-perl tracker libtracker-sparql-1.0-dev libtracker-miner-1.0-dev
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;2-下载netatalk源文件&#34;&gt;2. &lt;a href=&#34;https://sourceforge.net/projects/netatalk/files/netatalk/&#34;&gt;下载&lt;/a&gt;Netatalk源文件&lt;/h1&gt;
+&lt;p&gt;或使用 &lt;code&gt;wget http://prdownloads.sourceforge.net/netatalk/netatalk-3.1.12.tar.bz2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;cd到下载文件目录&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tar xvf netatalk-3.1.12.tar.bz2
+cd netatalk-3.1.12
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;3开始安装配置&#34;&gt;3.开始安装配置&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;./configure \
+        --with-init-style=debian-systemd \
+        --without-libevent \
+        --without-tdb \
+        --with-cracklib \
+        --enable-krbV-uam \
+        --with-pam-confdir=/etc/pam.d \
+        --with-dbus-daemon=/usr/bin/dbus-daemon \
+        --with-dbus-sysconf-dir=/etc/dbus-1/system.d \
+        --with-tracker-pkgconfig-version=1.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;3之后就可以make了&#34;&gt;3.之后就可以make了&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;这里有个问题：如果在conda的环境里记得退出来&lt;code&gt;conda deactivate&lt;/code&gt;，如果出现文件访问问题需要使用sudo权限&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo make
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;两步都不应该有错误&lt;/p&gt;
+&lt;h1 id=&#34;4检查安装&#34;&gt;4.检查安装：&lt;/h1&gt;
+&lt;p&gt;需要先把netatalk添加到PATH中&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export PATH=&amp;quot;/usr/local/sbin/:$PATH&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;再使用&lt;code&gt;netatalk -V&lt;/code&gt;和&lt;code&gt;afpd -V&lt;/code&gt;可得到&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ /usr/local/sbin/netatalk -V
+netatalk 3.1.12 - Netatalk AFP server service controller daemon
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version. Please see the file COPYING for further information and details.
+
+netatalk has been compiled with support for these features:
+
+      Zeroconf support: Avahi
+     Spotlight support: Yes
+
+                  afpd: /usr/local/sbin/afpd
+            cnid_metad: /usr/local/sbin/cnid_metad
+       tracker manager: /usr/bin/tracker daemon
+           dbus-daemon: /usr/bin/dbus-daemon
+              afp.conf: /usr/local/etc/afp.conf
+     dbus-session.conf: /usr/local/etc/dbus-session.conf
+    netatalk lock file: /var/lock/netatalk
+		
+$ /usr/local/sbin/afpd -V
+afpd 3.1.12 - Apple Filing Protocol (AFP) daemon of Netatalk
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version. Please see the file COPYING for further information and details.
+
+afpd has been compiled with support for these features:
+
+          AFP versions: 2.2 3.0 3.1 3.2 3.3 3.4 
+         CNID backends: dbd last tdb mysql 
+      Zeroconf support: Avahi
+  TCP wrappers support: Yes
+         Quota support: Yes
+   Admin group support: Yes
+    Valid shell checks: Yes
+      cracklib support: Yes
+            EA support: ad | sys
+           ACL support: Yes
+          LDAP support: Yes
+         D-Bus support: Yes
+     Spotlight support: Yes
+         DTrace probes: Yes
+
+              afp.conf: /usr/local/etc/afp.conf
+           extmap.conf: /usr/local/etc/extmap.conf
+       state directory: /usr/local/var/netatalk/
+    afp_signature.conf: /usr/local/var/netatalk/afp_signature.conf
+      afp_voluuid.conf: /usr/local/var/netatalk/afp_voluuid.conf
+       UAM search path: /usr/local/lib/netatalk//
+  Server messages path: /usr/local/var/netatalk/msg/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;5配置afpconf&#34;&gt;5.配置afp.conf&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;[My Time Machine]
+path = /mnt/timemachine/storage #确保路径可正常访问
+time machine = yes
+# vol size limit = 170000
+spotlight = yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用下列命令启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# systemctl enable avahi-daemon
+# systemctl enable netatalk
+# systemctl start avahi-daemon
+# systemctl start netatalk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在&lt;code&gt;/etc/samba/smb.conf&lt;/code&gt;中使用&lt;br&gt;
+&lt;code&gt;hide files = /.DS_Store/Network TrashFolder/TheFindByContentFolder/TheVolumeSettingsFolder/TemporaryItems/.TemporaryItems/.VolumeIcon.icns/Icon?/.FBCIndex/.FBCLockFolder/ &lt;/code&gt;来隐藏不需要的文件&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;https://www.orzorc.com/201611/implementation-of-afp-server-on-ubuntu/&lt;br&gt;
+http://netatalk.sourceforge.net/wiki/index.php/Install_Netatalk_3.1.12_on_Debian_9_Stretch&lt;/p&gt;
+&lt;/blockquote&gt;
+">Netatalk v3 安装 - deepin</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/shi-yong-linux-da-jian-shi-jian-xiao-nang-time-machinefu-wu-qi/"" data-c="
+          &lt;p&gt;由于前段时间mac屏幕突然报废，意识到了数据备份的重要性，时常插硬盘等待备份有时候很是麻烦，所以正好实验室有一台自己用的装了deepin的服务器那就在上面搭个时间胶囊的服务器，连进校园网后能让他自动备份。&lt;br&gt;
+Netatalk v2&lt;/p&gt;
+&lt;p&gt;samba&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;p&gt;在deepin上搭建一个Time Machine服务器，仍有部分问题需要解决&lt;/p&gt;
+&lt;h1 id=&#34;netatalk-v2&#34;&gt;Netatalk v2&lt;/h1&gt;
+&lt;p&gt;在下一个博客中该用Netatalk v3&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只能用ipv4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1安装需要的软件&#34;&gt;1.安装需要的软件&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt install netatalk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;一个afp服务器软件，其中包含avahi&lt;/p&gt;
+&lt;h2 id=&#34;2准备文件夹&#34;&gt;2.准备文件夹&lt;/h2&gt;
+&lt;p&gt;在想要备份的文件夹内新建TimeMachineFolder文件夹&lt;/p&gt;
+&lt;h2 id=&#34;3设置netatalk&#34;&gt;3.设置netatalk&lt;/h2&gt;
+&lt;p&gt;首先备份配置文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo mv /etc/netatalk/AppleVolumes.default  /etc/netatalk/AppleVolumes.default.old
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后创建新配置文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo touch /etc/netatalk/AppleVolumes.default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用Vim在文件末尾添加下列语句&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;:DEFAULT: options:upriv,usedots
+/home/tm/TimeMachineFolder &amp;quot;My Time Machine&amp;quot; options:tm volsizelimit:102400
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注意将第2行的文件夹路径设定为你再第2步中创建的文件夹的路径。&lt;/p&gt;
+&lt;p&gt;第二行中的&lt;code&gt;volsizelimit&lt;/code&gt;设定了Time Machine将会使用的最大硬盘空间，单位是MB。&lt;/p&gt;
+&lt;h2 id=&#34;4重启netatalk&#34;&gt;4.重启netatalk&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;sudo service netatalk restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;5在mac上连接到time-machine&#34;&gt;5.在Mac上连接到Time Machine&lt;/h2&gt;
+&lt;p&gt;首先直接尝试在Time Machine中选择这个服务器（会显示在可用磁盘下面，名字显示为第四步中你netatalk设置文件中指定的名字）。&lt;/p&gt;
+&lt;p&gt;如果你无法找到，那么打开Finder并按下⌘+K，在弹出来的窗口中，于服务器地址一栏输入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;afp://IP.of.your.server/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后点连接。&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1562467606034.png&#34; alt=&#34;1562467606034&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;samba未试验成功&#34;&gt;samba（&lt;s&gt;未试验成功&lt;/s&gt;）&lt;/h1&gt;
+&lt;p&gt;必须在局域网下，不能跨网段 ,必须在局域网下，不能跨网段 ,必须在局域网下，不能跨网段&lt;br&gt;
+&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;必须在局域网下，不能跨网段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;发现这个协议 &lt;s&gt;好像更方便&lt;/s&gt; 有点难整&lt;/p&gt;
+&lt;p&gt;deepin里面自带samba&lt;/p&gt;
+&lt;p&gt;（Samba 提供文件共享、 Avahi) 提供服务广播的方式，搭建通过网络进行备份的 Time Machine 备份服务器，实现和 Time Capsule 体验一致的无干预自动备份。&lt;/p&gt;
+&lt;p&gt;Samba 最初是基于 Microsoft 的 SMB 文件共享协议开发的开源实现，Avahi 则是以 Apple 开源的 Bonjour 源码上发展而来的 zeroconf 实现，说到底还是原本就有的协议了。&lt;/p&gt;
+&lt;h2 id=&#34;1配置-samba-提供文件共享服务让-macos-能够访问到备份数据路径&#34;&gt;1.配置 Samba 提供文件共享服务，让 macOS 能够访问到备份数据路径。&lt;/h2&gt;
+&lt;h3 id=&#34;首先添加一个-time-machine-专用的用户&#34;&gt;首先，添加一个 Time Machine 专用的用户。&lt;/h3&gt;
+&lt;p&gt;我这里使用了个人用户，反正都是个人数据。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;useradd dazzy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后，设置该用户的 Samba 协议密码，这个密码跟 Linux 系统用户密码是相互独立的，需要单独设置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;smbpasswd -a dazzy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;接着就是配置-samba-让它把备份数据路径暴露出去&#34;&gt;接着，就是配置 Samba 让它把备份数据路径暴露出去。&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;vim /etc/samba/smb.conf
+#文件最后插入
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#服务名称，会显示在 Time Machine 备份界面
+[Time Machine]
+#备份数据路径
+path = /data/timemachine
+#允许SMB客户端写入
+writable = yes 
+#允许访问的用户列表，避免备份数据泄漏
+valid users = dazzy
+#catia: 兼容linux/macos中合法但在Windows/SMB中非法的字符
+#fruit: 增强macos的的兼容性，并提供Netatalk AFP服务
+#streams_xattr: 通过Linux文件系统提供Windows NTFS属性字段
+vfs objects = catia fruit streams_xattr
+#启用Apple SMB客户端兼容
+fruit:aapl = yes
+#修改一下Finder里的图标
+fruit:model = MacPro
+#重要！开启 Time Machine 支持
+fruit:time machine = yes
+spotlight = yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;最后启动samba服务&#34;&gt;最后启动samba服务&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;systemctl enable --now smb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;2配置-avahi&#34;&gt;2.配置 Avahi&lt;/h2&gt;
+&lt;p&gt;Avahi 不需要配置。没错，直接启动就好了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl enable --now avahi-daemon
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参考内容：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;https://blog.dazzyd.org/providing-time-machine-on-linux/&lt;/li&gt;
+&lt;li&gt;https://blog.51cto.com/penguintux/2318250&lt;/li&gt;
+&lt;li&gt;https://drkbl.com/ubuntu-18-samba-time-machine/&lt;/li&gt;
+&lt;li&gt;https://kirb.me/2018/03/24/using-samba-as-a-time-machine-network-server.html&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+">使用 Linux - deepin 搭建 Apple 时间机器（Time Machine）服务器</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/numpy-zhong-tile-han-shu/"" data-c="
+          &lt;p&gt;&lt;strong&gt;功能：把数组沿各个方向复制&lt;/strong&gt;&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;p&gt;函数格式tile(A,reps)&lt;/p&gt;
+&lt;p&gt;A和reps都是array_like&lt;/p&gt;
+&lt;p&gt;A的类型众多，几乎所有类型都可以：array，list，tuple，dict，matrix以及基本数据类型int，string，float以及bool类型&lt;/p&gt;
+&lt;p&gt;reps的类型也很多，可以是tuple，list，dict，array，int，bool。但不可以是float，string，matrix类型。&lt;/p&gt;
+&lt;p&gt;返回的是数组类型&lt;/p&gt;
+&lt;hr&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;&amp;gt;&amp;gt;&amp;gt; numpy.tile([1,2], 4)
+array([1, 2, 1, 2, 1, 2, 1, 2])
+# 以一个纬度重复[1,2]4次
+# 重复本身数组四次
+
+&amp;gt;&amp;gt;&amp;gt; numpy.tile([1,2], (3,4))
+array([[1, 2, 1, 2, 1, 2, 1, 2],
+       [1, 2, 1, 2, 1, 2, 1, 2],
+       [1, 2, 1, 2, 1, 2, 1, 2]])
+# 以两个维度重复[1,2]，第一纬度重复3次，第二纬度重复4次
+# 二维时第一个数代表行数重复，后一个数代表列数重复
+
+&amp;gt;&amp;gt;&amp;gt; numpy.tile([1,2], (2,3,4))
+array([[[1, 2, 1, 2, 1, 2, 1, 2],
+        [1, 2, 1, 2, 1, 2, 1, 2],
+        [1, 2, 1, 2, 1, 2, 1, 2]],
+       [[1, 2, 1, 2, 1, 2, 1, 2],
+        [1, 2, 1, 2, 1, 2, 1, 2],
+        [1, 2, 1, 2, 1, 2, 1, 2]]])
+#以三个维度重复[1,2]，第一纬度重复2次，第二纬度重复3次，第三纬度重复4次
+&lt;/code&gt;&lt;/pre&gt;
+">numpy - tile函数</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/c-chart-kong-jian-de-shi-yong/"" data-c="
+          &lt;p&gt;&lt;strong&gt;在项目里制作一个实时显示激光位置的坐标图&lt;/strong&gt;&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;p&gt;拖入chart控件&lt;/p&gt;
+&lt;p&gt;需要在数据进来的位置新建Series，ChartArea&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c#&#34;&gt;	viewer.Series.Clear();//清空默认曲线
+	Series series1 = new Series (&amp;quot;xy&amp;quot;);//new一个新曲线
+	series1.ChartType = SeriesChartType.Point;//曲线类型选择point
+	series1.Points.AddXY(Convert.ToSingle(strXvalue), Convert.ToSingle(strYvalue));添加接收到的数据到曲线上
+	series1.MarkerSize = Convert.ToInt32(strLaser)/1000;//设置曲线点的大小，根据激光强度
+	viewer.ChartAreas[0].AxisX.MajorGrid.Interval = 2;//设置横轴网格间隔为2
+	viewer.Series.Add(series1);//把曲线添加到图表上
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其他选项可以在属性设置中设置&lt;/p&gt;
+&lt;p&gt;最重要的就是：&lt;/p&gt;
+&lt;p&gt;ChartArea//图标区&lt;/p&gt;
+&lt;p&gt;Series//曲线&lt;/p&gt;
+&lt;p&gt;Legends//图例&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1561433366718.png&#34; alt=&#34;1561433366718&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+">c# chart控件的使用</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/mac-xia-nodemcu-pei-zhi-micropython-bi-ji/"" data-c="
+          &lt;p&gt;&lt;strong&gt;基础环境搭建，烧录MicroPython固件，以及进入命令&lt;/strong&gt;&lt;/p&gt;
+ &lt;!--more--&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Aidanwangcy/FigureBed@master/img/1560669367913.png&#34; alt=&#34;1560669367913&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;环境准备&#34;&gt;环境准备：&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;安装esptool：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip3 install esptool
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;需要使用WebREPL client for MicroPython：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/micropython/webrepl&#34;&gt;WebREPL&lt;/a&gt;&lt;br&gt;
+​&lt;br&gt;
+下载或clone项目到本地&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装nodemcu驱动：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers&#34;&gt;nodemcu驱动&lt;/a&gt;&lt;br&gt;
+​&lt;br&gt;
+下载对应驱动（正常驱动可能识别不了需要安装传统版本，如遇到不能使用，请到-系统偏好设置-安全与隐私 中选择允许）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;下载固件：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://micropython.org/download&#34;&gt;MicroPython固件&lt;/a&gt;下载对应固件&lt;/p&gt;
+&lt;h2 id=&#34;1连接nodemcu到mac上&#34;&gt;1.连接nodemcu到Mac上&lt;/h2&gt;
+&lt;p&gt;使用&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ls /dev/tty*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;或者&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ls /dev/cu*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查询端口是否可用（即列表中是否包含SLABUSBtoUART）&lt;/p&gt;
+&lt;h2 id=&#34;2擦除之前固件&#34;&gt;2.擦除之前固件&lt;/h2&gt;
+&lt;p&gt;运行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;esptool.py --port /dev/cu.SLABUSBtoUART eraseflash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;或&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;esptool.py --port /dev/tty.SLABUSBtoUART eraseflash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;擦除原厂固件,直到出现&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chip erase complete successfully
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;3烧录固件&#34;&gt;3.烧录固件&lt;/h2&gt;
+&lt;p&gt;cd 到固件下载目录&lt;/p&gt;
+&lt;p&gt;使用命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;esptool.py --port /dev/tty.SLABUSBtoUART --baud 115200 writeflash --flashsize=detect -fm dio 0 esp8266-20190125-v1.10.bin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;（其中esp8266-20190125-v1.10.bin为固件名，单独的esp8266模块可省略-fm dio 0）&lt;/p&gt;
+&lt;h2 id=&#34;4连接esp8266&#34;&gt;4.连接esp8266&lt;/h2&gt;
+&lt;p&gt;​	运行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;screen /dev/tty.SLABUSBtoUART 115200 fn=off
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;​	出现光标后按Nodemcu上的RST进行硬中断&lt;/p&gt;
+&lt;p&gt;​	出现MicroPython 说明烧写成功&lt;/p&gt;
+&lt;p&gt;​	OSError:[Errno 2] ENOENT（错误表示没有main.py）&lt;/p&gt;
+&lt;h2 id=&#34;5启用webrepl服务&#34;&gt;5.启用WEBREPL服务&lt;/h2&gt;
+&lt;p&gt;​	输入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import webreplsetup
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;会要求你确认是否启用，输入E启用，输入D禁用&lt;/p&gt;
+&lt;p&gt;​	设置网密码后重启&lt;/p&gt;
+&lt;h2 id=&#34;6使用webrepl进行文件写入及管理&#34;&gt;6.使用WEBREPL进行文件写入及管理&lt;/h2&gt;
+&lt;p&gt;​	连接NodeMCU自己的ap，ssid为MicroPython-******，password为micropythonN&lt;/p&gt;
+&lt;p&gt;​	打开下载的webrepl包中webrepl.html文件&lt;/p&gt;
+&lt;p&gt;​	点击左上角connect连接成功后即可进行编辑或上传文件&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;一个设置和连接wifi的demo&#34;&gt;一个设置和连接wifi的demo&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;
+import network
+
+def doconnect():
+		wlan = network.WLAN(network.STAIF)
+    wlan.active(True)
+    if not wlan.isconnected():
+        print(&#39;connecting to network...&#39;)
+        wlan.connect(&#39;MERCURY20C2&#39;, &#39;66668888&#39;)
+        while not wlan.isconnected():
+            pass
+    print(&#39;connect network config:&#39;, wlan.ifconfig())
+    print(&amp;quot;Connect AP done!&amp;quot;)
+
+def setAP():
+    ap = network.WLAN(network.APIF)
+    ap.active(True)
+    ap.config(essid=&#39;MicroPy&#39;, password=&#39;66668888&#39;)
+    print(&#39;AP config:&#39;, ap.ifconfig())
+    print(&#39;Set AP done!&#39;)
+
+if name == &#39;main&#39;:
+    print(&#39;Hello&#39;)
+    doconnect()
+    setAP()
+&lt;/code&gt;&lt;/pre&gt;
+">MAC下NodeMCU配置MicroPython</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/about/"" data-c="
+          &lt;p&gt;来源：北工大无线网络研究生一枚&lt;/p&gt;
+&lt;p&gt;GitHub：https://github.com/Aidanwangcy&lt;/p&gt;
+&lt;p&gt;Email：aidanwangcy@163.com&lt;/p&gt;
+">关于</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://blog.popoup.top/post/hello-gridea/"" data-c="
+          &lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;
+✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/getgridea/gridea&#34;&gt;Github&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://hvenotes.fehey.com/&#34;&gt;Gridea 主页&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://fehey.com/&#34;&gt;示例网站&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;特性&#34;&gt;特性👇&lt;/h2&gt;
+&lt;p&gt;📝  你可以使用最酷的 &lt;strong&gt;Markdown&lt;/strong&gt; 语法，进行快速创作&lt;/p&gt;
+&lt;p&gt;🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片&lt;/p&gt;
+&lt;p&gt;🏷️  你可以对文章进行标签分组&lt;/p&gt;
+&lt;p&gt;📋  你可以自定义菜单，甚至可以创建外部链接菜单&lt;/p&gt;
+&lt;p&gt;💻  你可以在 &lt;strong&gt;𝖶𝗂𝗇𝖽𝗈𝗐𝗌&lt;/strong&gt; 或 &lt;strong&gt;𝖬𝖺𝖼𝖮𝖲&lt;/strong&gt; 设备上使用此客户端&lt;/p&gt;
+&lt;p&gt;🌎  你可以使用 &lt;strong&gt;𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌&lt;/strong&gt; 或 &lt;strong&gt;Coding Pages&lt;/strong&gt; 向世界展示，未来将支持更多平台&lt;/p&gt;
+&lt;p&gt;💬  你可以进行简单的配置，接入 &lt;a href=&#34;https://github.com/gitalk/gitalk&#34;&gt;Gitalk&lt;/a&gt; 或 &lt;a href=&#34;https://github.com/SukkaW/DisqusJS&#34;&gt;DisqusJS&lt;/a&gt; 评论系统&lt;/p&gt;
+&lt;p&gt;🇬🇧  你可以使用&lt;strong&gt;中文简体&lt;/strong&gt;或&lt;strong&gt;英语&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力&lt;/p&gt;
+&lt;p&gt;🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步&lt;/p&gt;
+&lt;p&gt;🌱 当然 &lt;strong&gt;Gridea&lt;/strong&gt; 还很年轻，有很多不足，但请相信，它会不停向前🏃&lt;/p&gt;
+&lt;p&gt;未来，它一定会成为你离不开的伙伴&lt;/p&gt;
+&lt;p&gt;尽情发挥你的才华吧！&lt;/p&gt;
+&lt;p&gt;😘 Enjoy~&lt;/p&gt;
+">Hello Gridea</a>
+      </div>
+      
+    </div>
+    <div class="page">
+      <div id="page_ul"></div>
+    </div>
+  </div>
+</div>
+<script>
+  !function () {
+    let searchMask = document.querySelector('#search_mask');
+    let result = document.querySelector('#result');
+    let items = document.querySelectorAll('.item');
+    let searchBox = document.querySelector('#search');
+    let statCount = document.querySelector('#stat_count');
+    let statTimes = document.querySelector('#stat_times');
+    let pageUl = document.querySelector('#page_ul');
+    let close = document.querySelector('#close');
+    
+    close.addEventListener('click', function() {
+      searchMask.style = 'display: none;'
+    })
+
+    let finds = [];
+    let contents = [];
+    let pageSize = 10;
+    items.forEach(item => {
+      let a = item.querySelector('a');
+      contents.push({
+        title: a.innerText,
+        details: a.dataset.c,
+        link: a.href
+      })
+      item.remove();
+    })
+
+    function insertStr(soure, start, count) {
+      let newStr = soure.substr(start, count);
+      return soure.slice(0, start) + '<em>' + newStr + '</em>' + soure.slice(start + count);
+    }
+
+    pageUl.addEventListener('click', function(event) {
+      let target = event.target;
+      if (target.__proto__ === HTMLSpanElement.prototype) {
+        appendResults(parseInt(target.dataset.i));
+      }
+    })
+
+    function appendResults(index) {
+      let htmlResult = '';
+      let start = index || 0;
+      let end = Math.min(start + pageSize, finds.length);
+      for (let i = start; i < end; i++) {
+        const current = finds[i];
+        let html = current.title;
+        let sum = 0;
+        let positions = current.positions;
+        positions.forEach(position => {
+          html = insertStr(html, position.start + sum, position.count);
+          sum += 9;
+        })
+        htmlResult += `<div class="item"><a class="result-title" href="${current.link}">${html}</a></div>`;
+      }
+      result.innerHTML = htmlResult;
+      pageUl.innerHTML = '';
+      let count = finds.length / pageSize;
+      let lis = '';
+      if (start !== 0) {
+        lis += `<span class="fa fa-angle-left" data-i='${start - 1}'></span>`;
+      }
+      for (let i = 0; i < count; i++) {
+        lis += `<span class='${i === start?'current':''}' data-i='${i}'>${i+1}</span>`;     
+      }
+      if (start+1 < count) {
+        lis += `<span class="fa fa-angle-right" data-i='${start+1}'></span>`;  
+      }
+      pageUl.innerHTML = lis;
+    }
+
+    function search(delay) {
+      let timer = null
+      return function () {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          let start = Date.now();
+          let segments = searchBox.value.split(' ').filter(c => c != '');
+          if (segments.length <= 0) {
+            return;
+          }
+          finds = [];
+          let htmlResult = '';
+          contents.forEach(content => {
+            let title = content.title;
+            let positions = [];
+            let find = false;
+            segments.forEach((segment) => {
+              if (content.title.includes(segment)) {
+                find = true;
+                positions.push({
+                  start: content.title.indexOf(segment),
+                  count: segment.length
+                })
+              } else if (content.details.includes(segment)) {
+                find = true;
+              }
+            });
+            if (find) {
+              finds.push({
+                title: content.title,
+                link: content.link,
+                positions
+              });
+            }
+          })
+          appendResults(0);
+          statCount.textContent = finds.length;
+          statTimes.textContent = Date.now() - start;
+        }, delay)
+      }
+    }
+    searchBox.addEventListener('input', search(200));
+  }()
+</script>
+
+<input hidden id="copy" />
+<script>
+  !function () {
+    let times = document.querySelectorAll('.publish-time');
+    for (let i = 0; i < times.length; i++) {
+      let date = times[i].dataset.t;
+      let time = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+      if (time < 60) {
+        str = time + '秒之前';
+      } else if (time < 3600) {
+        str = Math.floor(time / 60) + '分钟之前';
+      } else if (time >= 3600 && time < 86400) {
+        str = Math.floor(time / 3600) + '小时之前';
+      } else if (time >= 86400 && time < 259200) {
+        str = Math.floor(time / 86400) + '天之前';
+      } else {
+        str = times[i].textContent;
+      }
+      times[i].textContent = str;
+    }
+  }();
+</script>
+
+<script>
+  let language = '';
+  if (language !== '') {
+    let map = new Map();
+    if (language === 'en') {
+      map.set('search', 'Search');
+      map.set('category', 'Categories');
+      map.set('article', 'Articles');
+      map.set('tag', 'Tags');
+      map.set('top', 'Top');
+      map.set('publish', 'published');
+      map.set('minute', ' minutes');
+      map.set('read-more', 'Read More');
+      map.set('view', 'View');
+      map.set('words', ' words');
+      map.set('category-in', 'category in');
+      map.set('preview', 'Meta');
+      map.set('index', 'Toc');
+      map.set('no-archives', "You haven't created yet");
+      map.set('archives', " articles in total");
+      map.set('cloud-tags', " tags in total");
+      map.set('copyright', "Copyright: ");
+      map.set('author', "Author: ");
+      map.set('link', "Link: ");
+      map.set('leave-message', "Leave a message");
+      map.set('format', "Links Format");
+      map.set('site-name', "Name: ");
+      map.set('site-link', "Link: ");
+      map.set('site-desc', "Desc: ");
+      map.set('stat', " related results, taking ");
+      map.set('stat-time', " ms");
+      map.set('site-img', "Image: ");
+    }
+
+    if (map.size > 0) {
+      let lanElems = document.querySelectorAll('.language');
+      lanElems.forEach(elem => {
+        let lan = elem.dataset.lan, text = map.get(lan);
+        if (elem.__proto__ === HTMLInputElement.prototype) {
+          elem.placeholder = text
+        } else {
+          if (elem.dataset.count) {
+            text = elem.dataset.count + text;
+          }
+          elem.textContent = text;
+        }
+      })
+    }
+  }
+  //拿来主义(真香)^_^，Clipboard 实现摘自掘金 https://juejin.im/post/5aefeb6e6fb9a07aa43c20af
+  window.Clipboard = (function (window, document, navigator) {
+    var textArea,
+      copy;
+
+    // 判断是不是ios端
+    function isOS() {
+      return navigator.userAgent.match(/ipad|iphone/i);
+    }
+    //创建文本元素
+    function createTextArea(text) {
+      textArea = document.createElement('textArea');
+      textArea.value = text;
+      textArea.style.width = 0;
+      textArea.style.height = 0;
+      textArea.clientHeight = 0;
+      textArea.clientWidth = 0;
+      document.body.appendChild(textArea);
+    }
+    //选择内容
+    function selectText() {
+      var range,
+        selection;
+
+      if (isOS()) {
+        range = document.createRange();
+        range.selectNodeContents(textArea);
+        selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textArea.setSelectionRange(0, 999999);
+      } else {
+        textArea.select();
+      }
+    }
+
+    //复制到剪贴板
+    function copyToClipboard() {
+      try {
+        document.execCommand("Copy")
+      } catch (err) {
+        alert("复制错误！请手动复制！")
+      }
+      document.body.removeChild(textArea);
+    }
+
+    copy = function (text) {
+      createTextArea(text);
+      selectText();
+      copyToClipboard();
+    };
+
+    return {
+      copy: copy
+    };
+  })(window, document, navigator);
+
+  function copyCode(e) {
+    if (e.srcElement.tagName === 'SPAN' && e.srcElement.classList.contains('copy-code')) {
+      let code = e.currentTarget.querySelector('code');
+      var text = code.innerText;
+      if (e.srcElement.textContent === '复制成功') {
+        return;
+      }
+      e.srcElement.textContent = '复制成功';
+      (function (elem) {
+        setTimeout(() => {
+          if (elem.textContent === '复制成功') {
+            elem.textContent = '复制代码'
+          }
+        }, 1000);
+      })(e.srcElement)
+      Clipboard.copy(text);
+    }
+  }
+
+  let pres = document.querySelectorAll('pre');
+  pres.forEach(pre => {
+    let code = pre.querySelector('code');
+    let copyElem = document.createElement('span');
+    copyElem.classList.add('copy-code');
+    copyElem.textContent = '复制代码';
+    pre.appendChild(copyElem);
+    pre.onclick = copyCode
+  })
+
+</script>
+<script src="/media/js/motion.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+<script>
+  var scroll = new SmoothScroll('a[href*="#"]', {
+    speed: 200
+  });
+</script>
+
+
+
+
+
+</html>

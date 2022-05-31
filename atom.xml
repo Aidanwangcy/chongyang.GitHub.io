@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.popoup.top</id>
+    <title>Aidan&apos;s Blog</title>
+    <updated>2022-05-31T14:44:14.898Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://blog.popoup.top"/>
+    <link rel="self" href="https://blog.popoup.top/atom.xml"/>
+    <subtitle>Pain is motivation.</subtitle>
+    <logo>https://blog.popoup.top/images/avatar.png</logo>
+    <icon>https://blog.popoup.top/favicon.ico</icon>
+    <rights>All rights reserved 2022, Aidan&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[（小技巧）取消终端的conda base自动激活]]></title>
+        <id>https://blog.popoup.top/post/xiao-ji-qiao-qu-xiao-zhong-duan-de-conda-base-zi-dong-ji-huo/</id>
+        <link href="https://blog.popoup.top/post/xiao-ji-qiao-qu-xiao-zhong-duan-de-conda-base-zi-dong-ji-huo/">
+        </link>
+        <updated>2021-04-19T04:35:57.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[findJob（二）：操作系统]]></title>
+        <id>https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/</id>
+        <link href="https://blog.popoup.top/post/findjober-cao-zuo-xi-tong/">
+        </link>
+        <updated>2020-08-23T02:44:39.000Z</updated>
+        <summary type="html"><![CDATA[<p>这次是操作系统，其实我都写完了，只不过在添加，面试了这么多发现考操作系统的知识还是很多的，可以去文末的幕布看，我都及时更新在幕布里面了，祝早日拿到offer！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这次是操作系统，其实我都写完了，只不过在添加，面试了这么多发现考操作系统的知识还是很多的，可以去文末的幕布看，我都及时更新在幕布里面了，祝早日拿到offer！</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[findJob（一）：数据库复习]]></title>
+        <id>https://blog.popoup.top/post/findjobshu-ju-ku-fu-xi/</id>
+        <link href="https://blog.popoup.top/post/findjobshu-ju-ku-fu-xi/">
+        </link>
+        <updated>2020-08-03T15:09:36.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>findJob系列</strong>，我会把自己的复习的知识点都写出来，今天先是数据库的，督促自己看完。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>findJob系列</strong>，我会把自己的复习的知识点都写出来，今天先是数据库的，督促自己看完。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Linux问题记录]]></title>
+        <id>https://blog.popoup.top/post/linux-q&amp;a/</id>
+        <link href="https://blog.popoup.top/post/linux-q&amp;a/">
+        </link>
+        <updated>2020-06-18T07:18:30.000Z</updated>
+        <summary type="html"><![CDATA[<p>在Linux上开发需要经常查看的命令</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在Linux上开发需要经常查看的命令</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[信息熵]]></title>
+        <id>https://blog.popoup.top/post/xin-xi-shang/</id>
+        <link href="https://blog.popoup.top/post/xin-xi-shang/">
+        </link>
+        <updated>2020-04-18T07:29:33.000Z</updated>
+        <summary type="html"><![CDATA[<p>熵，一个标记系统混乱程度的概念。有点意思</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>熵，一个标记系统混乱程度的概念。有点意思</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Vim命令记录]]></title>
+        <id>https://blog.popoup.top/post/vim-ming-ling-ji-lu/</id>
+        <link href="https://blog.popoup.top/post/vim-ming-ling-ji-lu/">
+        </link>
+        <updated>2020-02-01T09:55:21.000Z</updated>
+        <summary type="html"><![CDATA[<p>vim是Linux下好用的编辑器，但是也需要熟悉使用命令才能 <s>更好装x</s> 提高效率</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>vim是Linux下好用的编辑器，但是也需要熟悉使用命令才能 <s>更好装x</s> 提高效率</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SwiftUI: @State 一个用来修改页面状态的神奇语句]]></title>
+        <id>https://blog.popoup.top/post/swiftui-@state/</id>
+        <link href="https://blog.popoup.top/post/swiftui-@state/">
+        </link>
+        <updated>2020-01-22T02:54:56.000Z</updated>
+        <summary type="html"><![CDATA[<p>在我现在接触到的 SwiftUI 开发中需要更改，保存页面的值的时候，比如按一个按钮就能增加一个值，当退出的时候这个值如何才能保存起来，在下次打开的时候还能使用就要用到 @State 这个属性装饰器。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在我现在接触到的 SwiftUI 开发中需要更改，保存页面的值的时候，比如按一个按钮就能增加一个值，当退出的时候这个值如何才能保存起来，在下次打开的时候还能使用就要用到 @State 这个属性装饰器。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[《See:看见》]]></title>
+        <id>https://blog.popoup.top/post/lesslessseekan-jian-greatergreater/</id>
+        <link href="https://blog.popoup.top/post/lesslessseekan-jian-greatergreater/">
+        </link>
+        <updated>2020-01-05T09:19:04.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2020新年快乐～]]></title>
+        <id>https://blog.popoup.top/post/2020/</id>
+        <link href="https://blog.popoup.top/post/2020/">
+        </link>
+        <updated>2019-12-31T16:05:58.000Z</updated>
+        <summary type="html"><![CDATA[<p>这是一篇旧年总结，但也是为了自己新年快乐，虽然我是想把这个blog当作一个技术博客来着，没想到没写几个就到了新年。总觉着现在过年的意义已经变成了年终和朋友们相聚的日子，只有这时候熟悉的旧友才能见面，1月1号成了每年循环的起止点，更具意义吧。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这是一篇旧年总结，但也是为了自己新年快乐，虽然我是想把这个blog当作一个技术博客来着，没想到没写几个就到了新年。总觉着现在过年的意义已经变成了年终和朋友们相聚的日子，只有这时候熟悉的旧友才能见面，1月1号成了每年循环的起止点，更具意义吧。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[📒：一些Docker的使用记录]]></title>
+        <id>https://blog.popoup.top/post/yi-xie-docker-de-shi-yong-ji-lu/</id>
+        <link href="https://blog.popoup.top/post/yi-xie-docker-de-shi-yong-ji-lu/">
+        </link>
+        <updated>2019-12-12T08:00:08.000Z</updated>
+        <summary type="html"><![CDATA[<p>打算大范围使用docker来搭建环境<br>
+有关Docker的内容命令太多以防忘记</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>打算大范围使用docker来搭建环境<br>
+有关Docker的内容命令太多以防忘记</p>
+]]></content>
+    </entry>
+</feed>
